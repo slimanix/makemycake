@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Toastr Custom Styles */
+.toast-container {
+  margin-top: 1rem;
+}
+
+.toast-success {
+  background-color: #10B981 !important;
+}
+
+.toast-error {
+  background-color: #EF4444 !important;
+}
+
+.toast-info {
+  background-color: #3B82F6 !important;
+}
+
+.toast-warning {
+  background-color: #F59E0B !important;
+}

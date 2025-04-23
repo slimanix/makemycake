@@ -1,0 +1,35 @@
+/* Navbar animations */
+.navbar {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Navbar shadow effect */
+.navbar.shadow-lg {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Navbar brand hover effect */
+.navbar-brand:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Button hover effects */
+.navbar-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar-button:hover {
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0.5rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+} 
