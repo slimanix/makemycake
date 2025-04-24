@@ -5,6 +5,7 @@ export interface ClientInfo {
 }
 
 export interface PatisserieInfo {
+    id: number;
     shopName: string;
     phoneNumber: string;
     location: string;

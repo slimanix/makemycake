@@ -1,0 +1,57 @@
+<div class="container mt-4">
+  <h2>Create New Offer</h2>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Create Offer Form -->
+  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="mb-3">
+      <label for="typeEvenement" class="form-label">Event Type</label>
+      <select class="form-select" id="typeEvenement" formControlName="typeEvenement">
+        <option value="">Select event type</option>
+        <option value="WEDDING">Wedding</option>
+        <option value="BIRTHDAY">Birthday</option>
+        <option value="ANNIVERSARY">Anniversary</option>
+        <option value="OTHER">Other</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="kilos" class="form-label">Weight (kg)</label>
+      <input type="number" class="form-control" id="kilos" formControlName="kilos" step="0.1" min="0">
+    </div>
+
+    <div class="mb-3">
+      <label for="prix" class="form-label">Price</label>
+      <input type="number" class="form-control" id="prix" formControlName="prix" step="0.01" min="0">
+    </div>
+
+    <div class="mb-3">
+      <label for="photo" class="form-label">Cake Photo</label>
+      <input type="file" class="form-control" id="photo" (change)="onFileSelected($event)" accept="image/*">
+      <div class="form-text">Please upload a photo of the cake (max 5MB)</div>
+    </div>
+
+    <!-- Image Preview -->
+    <div class="mb-3" *ngIf="previewUrl">
+      <img [src]="previewUrl" class="img-thumbnail" style="max-height: 200px;">
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-secondary" routerLink="/patissier/offers">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!offerForm.valid || !selectedFile">
+        Create Offer
+      </button>
+    </div>
+  </form>
+</div> 

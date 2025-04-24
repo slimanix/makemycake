@@ -1,0 +1,26 @@
+.table-responsive {
+  margin: 1rem 0;
+}
+
+.pagination {
+  margin: 1rem 0;
+}
+
+.badge {
+  padding: 0.5em 0.75em;
+  font-size: 0.875rem;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.alert {
+  margin: 1rem 0;
+} 

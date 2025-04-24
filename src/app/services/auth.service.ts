@@ -23,32 +23,56 @@ export class AuthService {
     this.loadUserInfo();
   }
 
-  private loadUserInfo(): void {
+   loadUserInfo(): void {
     if (this.isAuthenticated()) {
+      console.log('Loading user info - token exists');
       this.getUserInfo().subscribe({
         next: (response) => {
+          console.log('User info loaded:', response);
           if (response && response.data) {
+            console.log('Setting current user with data:', {
+              id: response.data.id,
+              email: response.data.email,
+              role: response.data.role,
+              patisserieInfo: response.data.patisserieInfo
+            });
             this.currentUserSubject.next(response.data);
+          } else {
+            console.error('No user data in response');
           }
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error loading user info:', error);
           this.logout();
         }
       });
+    } else {
+      console.log('No token found - user not authenticated');
     }
   }
 
   getUserInfo(): Observable<UserInfoResponse> {
-    return this.http.get<UserInfoResponse>(`${this.apiUrl}/me`);
+    return this.http.get<UserInfoResponse>(`${this.apiUrl}/me`).pipe(
+      tap(response => {
+        console.log('GET /me Response:', response);
+        if (response && response.data) {
+          console.log('Patisserie Info in Response:', response.data.patisserieInfo);
+        }
+      })
+    );
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response: LoginResponse) => {
+        console.log('Login response:', response);
         if (response && response.data) {
           localStorage.setItem('token', response.data);
           // Add a small delay before loading user info to ensure token is stored
-          setTimeout(() => this.loadUserInfo(), 100);
+          setTimeout(() => {
+            console.log('Loading user info after login');
+            this.loadUserInfo();
+          }, 100);
         } else {
           console.error('No token received in login response');
         }
@@ -84,7 +108,16 @@ export class AuthService {
   }
 
   getCurrentUser(): UserInfo | null {
-    return this.currentUserSubject.value;
+    this.loadUserInfo();
+    console.log('Current user subject value:', this.currentUserSubject.value);
+    const user = this.currentUserSubject.value;
+    console.log('Getting current user:', user);
+    if (user && user.patisserieInfo) {
+      console.log('Patisserie info found:', user.patisserieInfo);
+    } else {
+      console.log('No patisserie info in current user');
+    }
+    return user;
   }
 
   forgotPassword(email: string): Observable<ApiResponse<string>> {
@@ -92,6 +125,15 @@ export class AuthService {
   }
 
   resetPassword(token: string, newPassword: string): Observable<ApiResponse<string>> {
-    return this.http.post<ApiResponse<string>>(`${this.apiUrl}/reset-password`, { token, newPassword });
+    return this.http.post<ApiResponse<string>>(`${this.apiUrl}/reset-password`, {
+      token,
+      newPassword
+    });
+  }
+
+  verifyResetToken(token: string): Observable<ApiResponse<string>> {
+    return this.http.get<ApiResponse<string>>(`${this.apiUrl}/reset-password`, { 
+      params: { token }
+    });
   }
 } 

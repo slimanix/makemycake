@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <h2>Manage Your Offers</h2>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Offers Table -->
+  <div *ngIf="!loading && !error">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-primary" routerLink="/patissier/offers/create">
+        Create New Offer
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Event Type</th>
+            <th>Weight (kg)</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Validated By</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let offer of offers">
+            <td>{{ offer.typeEvenement }}</td>
+            <td>{{ offer.kilos }}</td>
+            <td>{{ offer.prix }}</td>
+            <td>
+              <span [class]="offer.valide ? 'badge bg-success' : 'badge bg-warning'">
+                {{ offer.valide ? 'Validated' : 'Pending' }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="offer.validatedByAdminName">
+                {{ offer.validatedByAdminName }}
+              </span>
+              <span *ngIf="!offer.validatedByAdminName">-</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-info me-2" [routerLink]="['/patissier/offers', offer.id]">
+                View
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deleteOffer(offer.id!)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <a class="page-link" (click)="onPageChange({pageIndex: currentPage - 1, pageSize})">Previous</a>
+          </li>
+          <li class="page-item" [class.active]="currentPage === i" *ngFor="let i of [].constructor(getTotalPages())">
+            <a class="page-link" (click)="onPageChange({pageIndex: i, pageSize})">{{i + 1}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="isLastPage()">
+            <a class="page-link" (click)="onPageChange({pageIndex: currentPage + 1, pageSize})">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div> 
