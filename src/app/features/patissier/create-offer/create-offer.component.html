@@ -1,23 +1,23 @@
-<div class="container mt-4">
-  <h2>Create New Offer</h2>
+<div class="container mt-4 max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Create New Offer</h2>
 
   <!-- Loading State -->
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+  <div *ngIf="loading" class="text-center py-8">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#df2050]"></div>
+    <p class="mt-2 text-gray-600">Loading...</p>
   </div>
 
   <!-- Error State -->
-  <div *ngIf="error" class="alert alert-danger" role="alert">
-    {{ error }}
+  <div *ngIf="error" class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+    <p>{{ error }}</p>
   </div>
 
   <!-- Create Offer Form -->
-  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
-    <div class="mb-3">
-      <label for="typeEvenement" class="form-label">Event Type</label>
-      <select class="form-select" id="typeEvenement" formControlName="typeEvenement">
+  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="space-y-6">
+    <div>
+      <label for="typeEvenement" class="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
+      <select class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 px-3 py-2 border"
+              id="typeEvenement" formControlName="typeEvenement">
         <option value="">Select event type</option>
         <option value="WEDDING">Wedding</option>
         <option value="BIRTHDAY">Birthday</option>
@@ -26,32 +26,51 @@
       </select>
     </div>
 
-    <div class="mb-3">
-      <label for="kilos" class="form-label">Weight (kg)</label>
-      <input type="number" class="form-control" id="kilos" formControlName="kilos" step="0.1" min="0">
+    <div>
+      <label for="kilos" class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+      <input type="number" 
+             class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 px-3 py-2 border"
+             id="kilos" formControlName="kilos" step="0.1" min="0">
     </div>
 
-    <div class="mb-3">
-      <label for="prix" class="form-label">Price</label>
-      <input type="number" class="form-control" id="prix" formControlName="prix" step="0.01" min="0">
+    <div>
+      <label for="prix" class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+      <input type="number" 
+             class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 px-3 py-2 border"
+             id="prix" formControlName="prix" step="0.01" min="0">
     </div>
 
-    <div class="mb-3">
-      <label for="photo" class="form-label">Cake Photo</label>
-      <input type="file" class="form-control" id="photo" (change)="onFileSelected($event)" accept="image/*">
-      <div class="form-text">Please upload a photo of the cake (max 5MB)</div>
+    <div>
+      <label for="photo" class="block text-sm font-medium text-gray-700 mb-1">Cake Photo</label>
+      <div class="mt-1 flex items-center">
+        <label for="photo" class="cursor-pointer">
+          <span class="px-4 py-2 bg-white rounded-md border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500">
+            Choose File
+          </span>
+          <input type="file" class="sr-only" id="photo" (change)="onFileSelected($event)" accept="image/*">
+        </label>
+        <span class="ml-2 text-sm text-gray-500" *ngIf="!selectedFile">No file chosen</span>
+        <span class="ml-2 text-sm text-gray-900" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+      </div>
+      <p class="mt-1 text-xs text-gray-500">Please upload a photo of the cake (max 5MB)</p>
     </div>
 
     <!-- Image Preview -->
-    <div class="mb-3" *ngIf="previewUrl">
-      <img [src]="previewUrl" class="img-thumbnail" style="max-height: 200px;">
+    <div *ngIf="previewUrl" class="mt-4">
+      <img [src]="previewUrl" class="rounded-md border border-gray-200 max-h-48">
     </div>
 
-    <div class="d-flex justify-content-between">
-      <button type="button" class="btn btn-secondary" routerLink="/patissier/offers">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="!offerForm.valid || !selectedFile">
+    <div class="flex justify-between pt-4">
+      <button type="button" 
+              class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+              routerLink="/patissier/offers">
+        Cancel
+      </button>
+      <button type="submit" 
+              class="px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-[#df2050] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50"
+              [disabled]="!offerForm.valid || !selectedFile">
         Create Offer
       </button>
     </div>
   </form>
-</div> 
+</div>
