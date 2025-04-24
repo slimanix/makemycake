@@ -7,101 +7,7 @@ import { UserInfo } from '../../models/user-info';
   selector: 'app-profile',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
-        <div class="bg-gradient-to-r from-pink-600 to-pink-800 px-6 py-4">
-          <h1 class="text-2xl font-bold text-white">Profile</h1>
-        </div>
-        
-        <div class="p-6" *ngIf="userInfo">
-          <!-- Basic Info -->
-          <div class="mb-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Basic Information</h2>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <p class="text-sm text-gray-600">Email</p>
-                <p class="font-medium">{{ userInfo.email }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Role</p>
-                <p class="font-medium">{{ userInfo.role }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Member Since</p>
-                <p class="font-medium">{{ userInfo.createdAt | date:'mediumDate' }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Status</p>
-                <span [class]="userInfo.enabled ? 'text-green-600' : 'text-red-600'">
-                  {{ userInfo.enabled ? 'Active' : 'Inactive' }}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Client Info -->
-          <div class="mb-8" *ngIf="userInfo.clientInfo">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Client Details</h2>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <p class="text-sm text-gray-600">Full Name</p>
-                <p class="font-medium">{{ userInfo.clientInfo.fullName }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Phone Number</p>
-                <p class="font-medium">{{ userInfo.clientInfo.phoneNumber }}</p>
-              </div>
-              <div class="col-span-2">
-                <p class="text-sm text-gray-600">Address</p>
-                <p class="font-medium">{{ userInfo.clientInfo.address }}</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Patisserie Info -->
-          <div class="mb-8" *ngIf="userInfo.patisserieInfo">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Patisserie Details</h2>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <p class="text-sm text-gray-600">Shop Name</p>
-                <p class="font-medium">{{ userInfo.patisserieInfo.shopName }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Phone Number</p>
-                <p class="font-medium">{{ userInfo.patisserieInfo.phoneNumber }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Location</p>
-                <p class="font-medium">{{ userInfo.patisserieInfo.location }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">SIRET Number</p>
-                <p class="font-medium">{{ userInfo.patisserieInfo.siretNumber }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-600">Validation Status</p>
-                <span [class]="userInfo.patisserieInfo.valid ? 'text-green-600' : 'text-yellow-600'">
-                  {{ userInfo.patisserieInfo.valid ? 'Validated' : 'Pending Validation' }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Loading State -->
-        <div class="p-6" *ngIf="!userInfo">
-          <div class="animate-pulse space-y-4">
-            <div class="h-4 bg-gray-200 rounded w-1/4"></div>
-            <div class="space-y-3">
-              <div class="h-4 bg-gray-200 rounded"></div>
-              <div class="h-4 bg-gray-200 rounded w-5/6"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `
+  templateUrl: './profile.component.html' // Only change: `template` → `templateUrl`
 })
 export class ProfileComponent implements OnInit {
   userInfo: UserInfo | null = null;
@@ -113,4 +19,4 @@ export class ProfileComponent implements OnInit {
       this.userInfo = user;
     });
   }
-} 
+}
