@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -30,10 +30,11 @@ export class RegisterComponent implements OnInit {
       fullName: [''],
       phoneNumber: [''],
       address: [''],
-      // Patissier fields
+      // Patissier fields (matching backend)
       shopName: [''],
       location: [''],
-      siretNumber: ['']
+      siretNumber: [''],
+      profilePicture: ['']
     });
   }
 
@@ -50,15 +51,30 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const registerRequest: RegisterRequest = this.registerForm.value;
+      const formValue = this.registerForm.value;
+      const registerRequest: RegisterRequest = {
+        email: formValue.email,
+        password: formValue.password,
+        role: formValue.role,
+        ...(this.selectedRole === 'CLIENT' ? {
+          fullName: formValue.fullName,
+          phoneNumber: formValue.phoneNumber,
+          address: formValue.address
+        } : {
+          shopName: formValue.shopName,
+          location: formValue.location,
+          siretNumber: formValue.siretNumber,
+          profilePicture: formValue.profilePicture,
+          phoneNumber: formValue.phoneNumber
+        })
+      };
+
       this.authService.register(registerRequest).subscribe({
-        next: () => {
-          this.router.navigate(['/auth/login']);
-        },
+        next: () => this.router.navigate(['/auth/login']),
         error: (error) => {
-          this.errorMessage = error.error.message || 'An error occurred during registration';
+          this.errorMessage = error.error.message || 'Registration failed';
         }
       });
     }
   }
-} 
+}

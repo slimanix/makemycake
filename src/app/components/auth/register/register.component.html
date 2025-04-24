@@ -50,17 +50,23 @@
             placeholder="Address">
         </div>
 
-        <!-- Patissier Fields -->
+        <!-- Patissier Fields (adapted to match backend exactly) -->
         <div *ngIf="selectedRole === 'PATISSIER'">
           <input name="shopName" type="text" formControlName="shopName"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="Shop Name">
-          <input name="location" type="text" formControlName="location"
+          <input name="phoneNumber" type="text" formControlName="phoneNumber"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Location">
+            placeholder="Phone Number">
+          <input name="profilePicture" type="text" formControlName="profilePicture"
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Profile Picture URL">
           <input name="siretNumber" type="text" formControlName="siretNumber"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="SIRET Number">
+          <input name="location" type="text" formControlName="location"
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Location">
         </div>
       </div>
 
@@ -82,4 +88,4 @@
       </a>
     </div>
   </div>
-</div> 
+</div>
