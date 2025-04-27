@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginModalComponent } from '../auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from '../auth/register-modal/register-modal.component';
@@ -15,11 +15,16 @@ import { RegisterModalComponent } from '../auth/register-modal/register-modal.co
 export class NavbarComponent {
   isLoginModalOpen = false;
   isRegisterModalOpen = false;
+  isMobileMenuOpen = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {}
 
   openLoginModal() {
     this.isLoginModalOpen = true;
+    this.isMobileMenuOpen = false;
   }
 
   closeLoginModal() {
@@ -28,6 +33,7 @@ export class NavbarComponent {
 
   openRegisterModal() {
     this.isRegisterModalOpen = true;
+    this.isMobileMenuOpen = false;
   }
 
   closeRegisterModal() {
@@ -36,5 +42,7 @@ export class NavbarComponent {
 
   logout() {
     this.authService.logout();
+    this.isMobileMenuOpen = false;
+    this.router.navigate(['/']);
   }
 } 

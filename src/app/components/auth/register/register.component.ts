@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   errorMessage: string = '';
+  selectedFile: File | null = null;
   selectedRole: 'CLIENT' | 'PATISSIER' = 'CLIENT';
 
   constructor(
@@ -30,12 +31,17 @@ export class RegisterComponent implements OnInit {
       fullName: [''],
       phoneNumber: [''],
       address: [''],
-      // Patissier fields (matching backend)
+      // Patissier fields
       shopName: [''],
       location: [''],
-      siretNumber: [''],
-      profilePicture: ['']
+      siretNumber: ['']
+      // Note: profilePicture removed from form group as it will be handled via file upload
     });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files?.[0] || null;
   }
 
   ngOnInit(): void {
@@ -51,26 +57,35 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const formValue = this.registerForm.value;
-      const registerRequest: RegisterRequest = {
-        email: formValue.email,
-        password: formValue.password,
-        role: formValue.role,
-        ...(this.selectedRole === 'CLIENT' ? {
-          fullName: formValue.fullName,
-          phoneNumber: formValue.phoneNumber,
-          address: formValue.address
-        } : {
-          shopName: formValue.shopName,
-          location: formValue.location,
-          siretNumber: formValue.siretNumber,
-          profilePicture: formValue.profilePicture,
-          phoneNumber: formValue.phoneNumber
-        })
-      };
+      const formData = new FormData();
+      const { profilePicture, ...formValue } = this.registerForm.value;
 
-      this.authService.register(registerRequest).subscribe({
-        next: () => this.router.navigate(['/auth/login']),
+    // 1. Add all form fields as JSON under 'request'
+    formData.append('request', new Blob([JSON.stringify(formValue)], {
+      type: 'application/json'
+    }));
+
+        // 2. Add the image file if exists
+        if (this.selectedFile) {
+          formData.append('profileImage', this.selectedFile);
+        }
+
+      // Add all form values to FormData
+      Object.keys(formValue).forEach(key => {
+        if (formValue[key] !== null && formValue[key] !== undefined) {
+          formData.append(key, formValue[key]);
+        }
+      });
+
+      // Add the image file if exists (for Patissier)
+      if (this.selectedRole === 'PATISSIER' && this.selectedFile) {
+        formData.append('profileImage', this.selectedFile);
+      }
+
+      this.authService.register(formData).subscribe({
+        next: () => {
+          this.router.navigate(['/auth/login']);
+        },
         error: (error) => {
           this.errorMessage = error.error.message || 'Registration failed';
         }

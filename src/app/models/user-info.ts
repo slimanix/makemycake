@@ -12,6 +12,7 @@ export interface PatisserieInfo {
     siretNumber: string;
     validated: boolean;
     valid: boolean;
+    profilePicture?: string;  // This should match your backend DTO
 }
 
 export interface UserInfo {
@@ -22,6 +23,7 @@ export interface UserInfo {
     enabled: boolean;
     clientInfo?: ClientInfo;
     patisserieInfo?: PatisserieInfo;
+    
 }
 
 export interface UserInfoResponse {

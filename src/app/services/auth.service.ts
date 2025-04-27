@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of, catchError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoginRequest } from '../models/login-request';
-import { RegisterRequest } from '../models/register-request';
 import { ApiResponse } from '../models/api-response';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserInfo, UserInfoResponse } from '../models/user-info';
 
-interface LoginResponse extends ApiResponse<string> {} // JWT token is in the data field
+interface LoginResponse extends ApiResponse<string> {}
 
 @Injectable({
   providedIn: 'root'
@@ -18,84 +17,106 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<UserInfo | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private jwtHelper = new JwtHelperService();
+  private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient) {
-    this.loadUserInfo();
+    // Load user info when service is initialized
+    this.loadStoredUserData();
   }
 
-   loadUserInfo(): void {
-    if (this.isAuthenticated()) {
-      console.log('Loading user info - token exists');
-      this.getUserInfo().subscribe({
-        next: (response) => {
-          console.log('User info loaded:', response);
-          if (response && response.data) {
-            console.log('Setting current user with data:', {
-              id: response.data.id,
-              email: response.data.email,
-              role: response.data.role,
-              patisserieInfo: response.data.patisserieInfo
-            });
-            this.currentUserSubject.next(response.data);
-          } else {
-            console.error('No user data in response');
-          }
-        },
-        error: (error) => {
-          console.error('Error loading user info:', error);
-          this.logout();
+  private loadStoredUserData(): void {
+    const token = this.getToken();
+    const storedUser = localStorage.getItem('user');
+
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      // If we have stored user data, use it immediately
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          this.currentUserSubject.next(userData);
+        } catch (e) {
+          console.error('Error parsing stored user data:', e);
         }
-      });
+      }
+      
+      // Then refresh it from the server
+      this.refreshUserInfo().subscribe();
+      
+      // Set up auto-refresh of token
+      this.autoRefreshToken(token);
     } else {
-      console.log('No token found - user not authenticated');
+      this.clearAuthData();
+    }
+  }
+
+  private refreshUserInfo(): Observable<UserInfoResponse> {
+    return this.getUserInfo().pipe(
+      tap((response) => {
+          if (response && response.data) {
+          this.storeUserData(response.data);
+        }
+      }),
+      catchError((error) => {
+        console.error('Error refreshing user info:', error);
+        if (error.status === 401) {
+          this.clearAuthData();
+        }
+        return of(null as any);
+      })
+    );
+  }
+
+  private storeUserData(user: UserInfo): void {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
+
+  private clearAuthData(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.currentUserSubject.next(null);
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+          }
+  }
+
+  private autoRefreshToken(token: string): void {
+    try {
+      const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+      if (expirationDate) {
+        const timeUntilExpiration = expirationDate.getTime() - Date.now();
+        const refreshTime = Math.max(timeUntilExpiration - 60000, 0); // Refresh 1 minute before expiration
+
+        this.tokenExpirationTimer = setTimeout(() => {
+          this.refreshUserInfo().subscribe();
+        }, refreshTime);
+      }
+    } catch (e) {
+      console.error('Error setting up token refresh:', e);
     }
   }
 
   getUserInfo(): Observable<UserInfoResponse> {
-    return this.http.get<UserInfoResponse>(`${this.apiUrl}/me`).pipe(
-      tap(response => {
-        console.log('GET /me Response:', response);
-        if (response && response.data) {
-          console.log('Patisserie Info in Response:', response.data.patisserieInfo);
-        }
-      })
-    );
+    return this.http.get<UserInfoResponse>(`${this.apiUrl}/me`);
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response: LoginResponse) => {
-        console.log('Login response:', response);
         if (response && response.data) {
           localStorage.setItem('token', response.data);
-          // Add a small delay before loading user info to ensure token is stored
-          setTimeout(() => {
-            console.log('Loading user info after login');
-            this.loadUserInfo();
-          }, 100);
-        } else {
-          console.error('No token received in login response');
+          this.loadStoredUserData(); // This will handle loading user info and setting up refresh
         }
-      }),
-      catchError(error => {
-        console.error('Login error:', error);
-        throw error;
       })
     );
   }
 
-  register(data: RegisterRequest): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/register`, data).pipe(
-      tap((response: ApiResponse<any>) => {
-        // Don't automatically login after registration
-        // The user needs to activate their account first
-      })
-    );
+  register(data: FormData): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/register`, data);
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    this.currentUserSubject.next(null);
+    this.clearAuthData();
   }
 
   isAuthenticated(): boolean {
@@ -108,16 +129,7 @@ export class AuthService {
   }
 
   getCurrentUser(): UserInfo | null {
-    this.loadUserInfo();
-    console.log('Current user subject value:', this.currentUserSubject.value);
-    const user = this.currentUserSubject.value;
-    console.log('Getting current user:', user);
-    if (user && user.patisserieInfo) {
-      console.log('Patisserie info found:', user.patisserieInfo);
-    } else {
-      console.log('No patisserie info in current user');
-    }
-    return user;
+    return this.currentUserSubject.value;
   }
 
   forgotPassword(email: string): Observable<ApiResponse<string>> {
@@ -136,4 +148,4 @@ export class AuthService {
       params: { token }
     });
   }
-} 
+}

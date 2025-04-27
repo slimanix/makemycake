@@ -50,7 +50,7 @@
             placeholder="Address">
         </div>
 
-        <!-- Patissier Fields (adapted to match backend exactly) -->
+        <!-- Patissier Fields -->
         <div *ngIf="selectedRole === 'PATISSIER'">
           <input name="shopName" type="text" formControlName="shopName"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -58,9 +58,19 @@
           <input name="phoneNumber" type="text" formControlName="phoneNumber"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="Phone Number">
-          <input name="profilePicture" type="text" formControlName="profilePicture"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Profile Picture URL">
+          
+          <!-- Changed from text input to file input -->
+          <div class="mt-1">
+            <label class="block text-sm font-medium text-gray-700">Shop Profile Picture</label>
+            <input type="file" accept="image/*" (change)="onFileSelected($event)"
+                   class="mt-1 block w-full text-sm text-gray-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-md file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-indigo-50 file:text-indigo-700
+                          hover:file:bg-indigo-100">
+          </div>
+
           <input name="siretNumber" type="text" formControlName="siretNumber"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="SIRET Number">

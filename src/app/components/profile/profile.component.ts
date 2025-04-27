@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { UserInfo } from '../../models/user-info';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,11 @@ import { UserInfo } from '../../models/user-info';
 export class ProfileComponent implements OnInit {
   userInfo: UserInfo | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
+
+  navigateToOfferManagement() {
+    this.router.navigate(['/patissier/offers']);
+  }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {

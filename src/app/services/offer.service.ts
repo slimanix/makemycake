@@ -90,14 +90,28 @@ export class OfferService {
   }
 
   deleteOffer(id: number): Observable<void> {
+    console.log(`Sending DELETE request to /api/offres/${id}`);
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      catchError(this.handleError)
+      tap(() => {
+        console.log(`Offer with ID ${id} successfully deleted`);
+      }),
+      catchError(error => {
+        console.error(`Error deleting offer with ID ${id}:`, error);
+        return this.handleError(error);
+      })
     );
   }
 
   getOfferById(id: number): Observable<Offer> {
+    console.log(`Fetching offer with ID ${id}`);
     return this.http.get<Offer>(`${this.apiUrl}/${id}`).pipe(
-      catchError(this.handleError)
+      tap(offer => {
+        console.log('Fetched offer:', offer);
+      }),
+      catchError(error => {
+        console.error(`Error fetching offer with ID ${id}:`, error);
+        return this.handleError(error);
+      })
     );
   }
 } 

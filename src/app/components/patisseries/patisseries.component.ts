@@ -14,6 +14,8 @@ interface Patisserie {
   userEmail: string;
   nombreOffres: number;
   valid: boolean;
+  profilePicture?: string;  // Add this line
+
 }
 
 interface ApiResponse {

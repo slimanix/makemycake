@@ -1,0 +1,8 @@
+/* Footer specific styles */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Add any additional footer-specific styles here */ 
