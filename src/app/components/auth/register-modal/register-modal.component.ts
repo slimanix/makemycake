@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
-import { NotificationService } from '../../../services/notification.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -20,15 +19,14 @@ export class RegisterModalComponent {
   
   selectedRole: 'CLIENT' | 'PATISSIER' = 'CLIENT';
   registerForm: FormGroup;
-  errorMessage: string = '';
+  errorMessage: string | null = null;
   showActivationMessage: boolean = false;
   userEmail: string = '';
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private notificationService: NotificationService,
-    private router: Router
+    private authService: AuthService
   ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -55,33 +53,26 @@ export class RegisterModalComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const formData = this.registerForm.value;
-      const userData = {
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-        ...(formData.role === 'CLIENT' ? {
-          fullName: formData.fullName,
-          phoneNumber: formData.phoneNumber,
-          address: formData.address
-        } : {
-          shopName: formData.shopName,
-          location: formData.location,
-          siretNumber: formData.siretNumber
-        })
-      };
-
-      this.authService.register(userData).subscribe({
-        next: (response) => {
-          this.userEmail = formData.email;
-          this.showActivationMessage = true;
-          this.notificationService.showSuccess('Registration successful! Please check your email to activate your account.');
+      this.loading = true;
+      this.errorMessage = null;
+      
+      this.authService.register(this.registerForm.value).subscribe({
+        next: () => {
+          this.loading = false;
+          console.log('Registration successful! Please check your email to activate your account.');
+          this.closeModal();
         },
         error: (error) => {
+          this.loading = false;
           this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
-          this.notificationService.showError(this.errorMessage);
+          console.error(this.errorMessage);
         }
       });
     }
+  }
+
+  closeModal() {
+    this.close.emit();
+    this.showActivationMessage = false;
   }
 } 

@@ -3,19 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { NotificationService } from '../../../services/notification.service';
-
-interface Offer {
-  id: number;
-  patisserieId: number;
-  typeEvenement: string;
-  description: string;
-  prix: number;
-  photoUrl: string;
-  kilos: number;
-  isValide: boolean;
-  adminId?: number;
-}
+import { OfferService, Offer } from '../../../services/offer.service';
 
 @Component({
   selector: 'app-patisserie-offers',
@@ -34,7 +22,7 @@ export class PatisserieOffersComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private notificationService: NotificationService
+    private offerService: OfferService
   ) {}
 
   ngOnInit() {
@@ -48,15 +36,15 @@ export class PatisserieOffersComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.http.get<Offer[]>(`${environment.apiUrl}/api/offres/patisserie/${this.patisserieId}`).subscribe({
-      next: (offers) => {
+    this.offerService.getOffersByPatisserie(this.patisserieId).subscribe({
+      next: (offers: Offer[]) => {
         this.offers = offers || [];
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         this.errorMessage = error.error?.message || 'Failed to load offers';
+        console.error(this.errorMessage);
         this.isLoading = false;
-        this.notificationService.showError(this.errorMessage);
       }
     });
   }

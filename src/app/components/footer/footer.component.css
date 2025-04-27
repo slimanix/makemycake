@@ -1,0 +1,13 @@
+.footer-bg {
+  background: linear-gradient(135deg, #f9f7f5 0%, #fbeff5 100%);
+  border-top: 2px solid #f3c1d1;
+}
+
+.footer-link {
+  color: #db2777;
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}
+.footer-link:hover {
+  color: #8B1F48;
+} 

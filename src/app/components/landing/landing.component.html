@@ -7,11 +7,8 @@
         <div class="flex justify-center mb-8 animate-float">
           <img src="assets/images/logo.png" alt="MakeMyCake Logo" class="h-28 w-auto bg-white rounded-lg p-2">
         </div>
-        <h2 class="text-2xl font-medium text-pink-100 mb-8 font-serif italic">
-          Where Your World Becomes Sweet
-        </h2>
         <h1 class="text-4xl font-extrabold text-white sm:text-5xl sm:tracking-tight lg:text-6xl font-display mb-6">
-          Find Your Perfect Cake
+          Where Your World Becomes Sweet
         </h1>
         <p class="mt-6 max-w-2xl mx-auto text-xl text-pink-100">
           Connect with the best patisseries in town and order your dream cake for any occasion.
@@ -64,9 +61,18 @@
   </div>
 
   <!-- Offers Section -->
-  <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+  <div *ngIf="!isPatisserie" class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
     <h2 class="text-3xl font-bold text-gray-900 text-center mb-4 font-display">Featured Offers</h2>
     <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Discover our selection of handcrafted cakes from the finest patisseries</p>
+
+    <!-- Filter by typeEvenement -->
+    <div class="flex justify-center mb-8">
+      <label for="typeEvenement-select" class="mr-2 font-medium text-gray-700">Filter by event type:</label>
+      <select id="typeEvenement-select" [(ngModel)]="selectedTypeEvenement" (ngModelChange)="onTypeEvenementChange()" class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300">
+        <option value="">All</option>
+        <option *ngFor="let type of typeEvenementOptions" [value]="type">{{ type }}</option>
+      </select>
+    </div>
 
     <!-- Loading State -->
     <div *ngIf="isLoading" class="flex justify-center items-center py-12">
@@ -81,7 +87,7 @@
 
     <!-- Offers Grid -->
     <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <div *ngFor="let offer of offers" 
+      <div *ngFor="let offer of paginatedOffers" 
            class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
         <div class="relative">
           <img [src]="offer.photoUrl" [alt]="offer.typeEvenement" class="w-full h-56 object-cover">
@@ -96,15 +102,24 @@
               <span class="font-medium text-pink-600">{{ offer.typeEvenement }}</span>
             </p>
           </div>
-          <button class="w-full bg-gradient-to-r from-pink-600 to-pink-700 text-white px-6 py-3 rounded-full font-medium hover:from-pink-700 hover:to-pink-800 transform hover:scale-105 transition-all duration-300 shadow-md hover:shadow-xl">
-            View Details
+          <button (click)="onConfigureCake(offer.id)" class="w-full bg-gradient-to-r from-pink-600 to-pink-700 text-white px-6 py-3 rounded-full font-medium hover:from-pink-700 hover:to-pink-800 transform hover:scale-105 transition-all duration-300 shadow-md hover:shadow-xl">
+            Configurate Your Cake
           </button>
         </div>
       </div>
     </div>
 
+    <!-- Pagination controls -->
+    <div class="pagination flex justify-center items-center gap-2 mt-8" *ngIf="totalPages > 1">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-3 py-1 rounded bg-gray-200 text-gray-700 font-semibold hover:bg-pink-100">&laquo;</button>
+      <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+        <button (click)="goToPage(i + 1)" [class.bg-pink-500]="currentPage === (i + 1)" [class.text-white]="currentPage === (i + 1)" class="px-3 py-1 rounded font-semibold" [ngClass]="{'bg-gray-200 text-gray-700 hover:bg-pink-100': currentPage !== (i + 1)}">{{ i + 1 }}</button>
+      </ng-container>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-3 py-1 rounded bg-gray-200 text-gray-700 font-semibold hover:bg-pink-100">&raquo;</button>
+    </div>
+
     <!-- No Offers State -->
-    <div *ngIf="offers.length === 0 && !isLoading && !errorMessage" 
+    <div *ngIf="filteredOffers.length === 0 && !isLoading && !errorMessage" 
          class="text-center bg-pink-50 rounded-2xl p-12 max-w-2xl mx-auto">
       <svg class="w-16 h-16 mx-auto text-pink-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

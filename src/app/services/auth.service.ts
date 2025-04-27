@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, catchError, of, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoginRequest } from '../models/login-request';
 import { RegisterRequest } from '../models/register-request';
@@ -18,6 +18,8 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<UserInfo | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private jwtHelper = new JwtHelperService();
+  private loginPopupSubject = new Subject<void>();
+  loginPopup$ = this.loginPopupSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.loadUserInfo();
@@ -108,16 +110,7 @@ export class AuthService {
   }
 
   getCurrentUser(): UserInfo | null {
-    this.loadUserInfo();
-    console.log('Current user subject value:', this.currentUserSubject.value);
-    const user = this.currentUserSubject.value;
-    console.log('Getting current user:', user);
-    if (user && user.patisserieInfo) {
-      console.log('Patisserie info found:', user.patisserieInfo);
-    } else {
-      console.log('No patisserie info in current user');
-    }
-    return user;
+    return this.currentUserSubject.value;
   }
 
   forgotPassword(email: string): Observable<ApiResponse<string>> {
@@ -135,5 +128,14 @@ export class AuthService {
     return this.http.get<ApiResponse<string>>(`${this.apiUrl}/reset-password`, { 
       params: { token }
     });
+  }
+
+  hasClientRole(): boolean {
+    const user = this.currentUserSubject.value;
+    return user?.role === 'CLIENT';
+  }
+
+  triggerLoginPopup() {
+    this.loginPopupSubject.next();
   }
 } 

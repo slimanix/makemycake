@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 interface Offer {
   id: number;
@@ -18,7 +20,7 @@ interface Offer {
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
@@ -27,7 +29,12 @@ export class LandingComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
 
-  constructor(private http: HttpClient) {}
+  // Filtering and pagination
+  selectedTypeEvenement: string = '';
+  currentPage: number = 1;
+  pageSize: number = 12;
+
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchOffers();
@@ -72,5 +79,66 @@ export class LandingComponent implements OnInit {
           ];
         }
       });
+  }
+
+  get typeEvenementOptions(): string[] {
+    const allTypes = this.offers.map(o => o.typeEvenement).filter(Boolean);
+    return Array.from(new Set(allTypes));
+  }
+
+  get filteredOffers(): Offer[] {
+    if (!this.selectedTypeEvenement) return this.offers;
+    return this.offers.filter(o => o.typeEvenement === this.selectedTypeEvenement);
+  }
+
+  get paginatedOffers(): Offer[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredOffers.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredOffers.length / this.pageSize);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  onTypeEvenementChange() {
+    this.currentPage = 1;
+  }
+
+  onConfigureCake(offerId?: number): void {
+    console.log('onConfigureCake called with offerId:', offerId);
+    const isAuthenticated = this.authService.isAuthenticated();
+    const hasClientRole = this.authService.hasClientRole();
+    if (isAuthenticated && hasClientRole) {
+      if (offerId) {
+        this.router.navigate(['/cake-configurator', offerId]);
+      } else {
+        this.router.navigate(['/']);
+      }
+    } else {
+      this.authService.triggerLoginPopup();
+    }
+  }
+
+  get isPatisserie(): boolean {
+    const user = this.authService.getCurrentUser();
+    return user?.role === 'PATISSIER';
   }
 } 

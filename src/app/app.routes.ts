@@ -13,6 +13,12 @@ import { PatisserieOffersComponent } from './components/patisseries/patisserie-o
 import { ProfileComponent } from './components/profile/profile.component';
 import { OfferManagementComponent } from './features/patissier/offer-management/offer-management.component';
 import { CreateOfferComponent } from './features/patissier/create-offer/create-offer.component';
+import { CakeConfiguratorModule } from './features/cake-configurator/cake-configurator.module';
+import { CakeConfiguratorComponent } from './features/cake-configurator/cake-configurator.component';
+import { ClientGuard } from './guards/client.guard';
+import { PatisseriesAccessGuard } from './guards/patisseries-access.guard';
+import { ClientCommandesComponent } from './features/client-commandes/client-commandes.component';
+import { PatissierCommandesComponent } from './features/patissier-commandes/patissier-commandes.component';
 
 export const routes: Routes = [
   { 
@@ -46,7 +52,8 @@ export const routes: Routes = [
   },
   {
     path: 'patisseries',
-    component: PatisseriesComponent
+    component: PatisseriesComponent,
+    canActivate: [PatisseriesAccessGuard]
   },
   {
     path: 'patisseries/:id/offers',
@@ -74,7 +81,25 @@ export const routes: Routes = [
       {
         path: 'offers/:id',
         component: OfferDetailsComponent
+      },
+      {
+        path: 'commandes',
+        component: PatissierCommandesComponent
       }
     ]
+  },
+  {
+    path: 'cake-configurator/:offerId',
+    component: CakeConfiguratorComponent,
+    canActivate: [ClientGuard]
+  },
+  {
+    path: 'cake-configurator',
+    component: CakeConfiguratorComponent,
+    canActivate: [ClientGuard]
+  },
+
+  { 
+    path: 'mes-commandes', component: ClientCommandesComponent 
   }
 ];

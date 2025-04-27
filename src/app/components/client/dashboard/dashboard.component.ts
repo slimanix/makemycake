@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { NotificationService } from '../../../services/notification.service';
 import { environment } from '../../../../environments/environment';
 import { Patisserie } from '../../../models/patisserie';
 
@@ -20,6 +21,7 @@ export class ClientDashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private http: HttpClient,
     private router: Router
   ) {}
@@ -29,6 +31,10 @@ export class ClientDashboardComponent implements OnInit {
     const currentUser = this.authService.getCurrentUser();
     if (currentUser) {
       this.userEmail = currentUser.email;
+      // Subscribe to patisserie notifications if patisserieInfo exists
+      if (currentUser.patisserieInfo && currentUser.patisserieInfo.id) {
+        this.notificationService.subscribeToPatisserieNotifications(currentUser.patisserieInfo.id);
+      }
     }
 
     // Fetch validated patisseries

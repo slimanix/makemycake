@@ -1,0 +1,53 @@
+<div class="relative">
+  <button (click)="toggleDropdown()" class="relative p-2 text-gray-600 hover:text-gray-800 focus:outline-none">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+    </svg>
+    <span *ngIf="unreadCount > 0" class="notification-badge">
+      {{ unreadCount }}
+    </span>
+  </button>
+
+  <div *ngIf="isDropdownOpen" class="notification-dropdown">
+    <div class="notification-header">
+      <h3 class="text-lg font-semibold text-gray-800">Notifications</h3>
+    </div>
+    
+    <div class="notification-list">
+      <div *ngIf="notifications.length === 0" class="notification-empty">
+        Aucune notification
+      </div>
+      
+      <div *ngFor="let notification of notifications" class="notification-item">
+        <div class="flex justify-between items-start mb-2">
+          <div>
+            <h4 class="font-semibold text-gray-800">Commande #{{ notification.id }}</h4>
+            <p class="text-sm text-gray-500">{{ notification.dateCreation | date:'medium' }}</p>
+          </div>
+          <span class="px-2 py-1 text-xs rounded-full {{ getStatusColor(notification.statut) }}">
+            {{ notification.statut.replace('_', ' ') }}
+          </span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          <div>
+            <p class="text-gray-500">Client</p>
+            <p class="font-medium">{{ notification.client.fullName }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Montant</p>
+            <p class="font-medium">{{ notification.montantTotal }} €</p>
+          </div>
+        </div>
+        
+        <div class="mt-2">
+          <p class="text-gray-500 text-sm">Détails</p>
+          <p class="text-sm">
+            {{ notification.nombrePersonnes }} personnes • 
+            {{ notification.couches.length }} couches
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

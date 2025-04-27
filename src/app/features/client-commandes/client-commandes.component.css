@@ -1,0 +1,120 @@
+.client-commandes-wrapper {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #db2777;
+  margin-bottom: 1.5rem;
+}
+.loading, .error, .empty {
+  text-align: center;
+  margin: 2rem 0;
+  color: #6b7280;
+}
+.error {
+  color: #dc2626;
+}
+.commandes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.commande-card {
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 4px 0 rgba(219,39,119,0.07);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid #fbcfe8;
+  transition: box-shadow 0.2s;
+}
+.commande-card:hover {
+  box-shadow: 0 4px 16px 0 rgba(219,39,119,0.13);
+}
+.commande-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #db2777;
+}
+.commande-patisserie {
+  font-weight: 600;
+  color: #db2777;
+}
+.commande-date {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+.commande-details {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1rem;
+}
+.commande-montant {
+  font-weight: 600;
+  color: #1f2937;
+}
+.commande-statut {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  background: #fdf2f8;
+}
+.statut-annulee {
+  color: #dc2626;
+  background: #fee2e2;
+}
+.statut-validee {
+  color: #16a34a;
+  background: #dcfce7;
+}
+.statut-en-cours {
+  color: #f59e42;
+  background: #fef9c3;
+}
+.couches-list {
+  margin: 0;
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+.filter-row select {
+  min-width: 160px;
+  background: #f9fafb;
+  border: 1px solid #fbcfe8;
+  color: #db2777;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s;
+}
+.filter-row select:focus {
+  border-color: #db2777;
+  outline: none;
+}
+.statut-attente {
+  color: #f59e42;
+  background: #fef9c3;
+}
+.statut-preparation {
+  color: #2563eb;
+  background: #dbeafe;
+}
+.statut-livraison {
+  color: #0ea5e9;
+  background: #cffafe;
+}
+.statut-terminee {
+  color: #16a34a;
+  background: #dcfce7;
+} 

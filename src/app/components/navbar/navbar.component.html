@@ -11,6 +11,27 @@
       <!-- Right side -->
       <div class="flex items-center space-x-4">
         <!-- Patisseries Link -->
+        <ng-container *ngIf="authService.currentUser$ | async as user; else guestLinks">
+          <a *ngIf="!user.patisserieInfo" routerLink="/patisseries" 
+             routerLinkActive="text-indigo-600"
+             [routerLinkActiveOptions]="{exact: true}"
+             class="text-gray-500 hover:text-indigo-600 transition-colors duration-200 flex items-center px-3 py-2 text-sm font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+            Patisseries
+          </a>
+          <a *ngIf="user.patisserieInfo" routerLink="/patissier/commandes"
+             routerLinkActive="text-indigo-600"
+             [routerLinkActiveOptions]="{exact: true}"
+             class="text-gray-500 hover:text-indigo-600 transition-colors duration-200 flex items-center px-3 py-2 text-sm font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+            </svg>
+            Commandes reçues
+          </a>
+        </ng-container>
+        <ng-template #guestLinks>
         <a routerLink="/patisseries" 
            routerLinkActive="text-indigo-600"
            [routerLinkActiveOptions]="{exact: true}"
@@ -20,6 +41,17 @@
           </svg>
           Patisseries
         </a>
+        </ng-template>
+        <ng-container *ngIf="authService.isAuthenticated()">
+          <ng-container *ngIf="authService.currentUser$ | async as user">
+            <a *ngIf="user.clientInfo" routerLink="/mes-commandes" routerLinkActive="text-pink-600" class="text-gray-500 hover:text-pink-600 transition-colors duration-200 flex items-center px-3 py-2 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+              </svg>
+              Mes Commandes
+            </a>
+          </ng-container>
+        </ng-container>
 
         <ng-container *ngIf="!authService.isAuthenticated()">
           <button (click)="openLoginModal()" 
@@ -41,24 +73,13 @@
         <ng-container *ngIf="authService.isAuthenticated()">
           <ng-container *ngIf="authService.currentUser$ | async as user">
             <div class="flex items-center space-x-4">
-              <div class="flex items-center space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <div class="text-sm text-gray-700">
-                  <span class="font-medium">
-                    {{ user.clientInfo?.fullName || user.patisserieInfo?.shopName || user.email }}
-                  </span>
-                  <span class="block text-xs text-gray-500">{{ user.role }}</span>
-                </div>
-              </div>
-              
+              <app-notification-bell *ngIf="isAuthenticated"></app-notification-bell>
               <button routerLink="/profile" 
                       class="px-4 py-2 text-sm font-medium text-pink-600 hover:text-pink-800 transition-colors duration-200 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                Profile
+                {{ user.clientInfo?.fullName || user.patisserieInfo?.shopName || user.email }}
               </button>
               
               <button (click)="logout()"
