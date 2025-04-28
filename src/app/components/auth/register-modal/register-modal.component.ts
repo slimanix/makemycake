@@ -67,26 +67,62 @@ export class RegisterModalComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const formData = this.registerForm.value;
-      const formDataObj = new FormData();
+      const formData = new FormData();
+      const formValue = this.registerForm.value;
       
-      Object.keys(formData).forEach(key => {
-        formDataObj.append(key, formData[key]);
-      });
-      
-      if (this.selectedFile) {
-        formDataObj.append('file', this.selectedFile);
+      // 1. Create a clean request object based on role
+      const requestData = {
+        email: formValue.email,
+        password: formValue.password,
+        role: this.selectedRole,
+        ...(this.selectedRole === 'CLIENT' ? {
+          fullName: formValue.fullName,
+          phoneNumber: formValue.phoneNumber,
+          address: formValue.address
+        } : {
+          shopName: formValue.shopName,
+          phoneNumber: formValue.phoneNumber,
+          location: formValue.location,
+          siretNumber: formValue.siretNumber
+        })
+      };
+
+      // 2. Append as proper JSON string with content type
+      const requestBlob = new Blob(
+        [JSON.stringify(requestData)], 
+        { type: 'application/json' }
+      );
+      formData.append('request', requestBlob);
+
+      // 3. Append file with proper field name
+      if (this.selectedRole === 'PATISSIER' && this.selectedFile) {
+        formData.append(
+          'profileImage', // Must match @RequestPart name in Spring
+          this.selectedFile,
+          this.selectedFile.name
+        );
       }
 
-      this.authService.register(formDataObj).subscribe({
+      // Debug: Log FormData contents
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
+
+      this.loading = true;
+      this.authService.register(formData).subscribe({
         next: (response) => {
-          this.userEmail = formData.email;
+          this.loading = false;
+          this.userEmail = formValue.email;
           this.showActivationMessage = true;
           this.notificationService.showSuccess('Registration successful! Please check your email to activate your account.');
         },
         error: (error) => {
           this.loading = false;
-          this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+          if (error.status === 415) {
+            this.errorMessage = 'Invalid file format. Please upload a valid image file (JPEG, PNG, or GIF).';
+          } else {
+            this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+          }
           console.error(this.errorMessage);
         }
       });

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, of, catchError } from 'rxjs';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap, of, catchError, map, filter } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoginRequest } from '../models/login-request';
 import { ApiResponse } from '../models/api-response';
@@ -112,7 +112,23 @@ export class AuthService {
   }
 
   register(data: FormData): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/register`, data);
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/register`, data, {
+      reportProgress: true,
+      observe: 'response',
+      headers: {
+        // Remove Content-Type header to let browser set it with boundary
+        'Accept': 'application/json, text/plain, */*'
+      }
+    }).pipe(
+      map(response => response.body as ApiResponse<any>),
+      catchError(error => {
+        console.error('Registration error:', error);
+        if (error.status === 0) {
+          throw new Error('Network error or CORS issue');
+        }
+        throw error;
+      })
+    );
   }
 
   logout(): void {

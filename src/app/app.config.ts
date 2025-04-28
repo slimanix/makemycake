@@ -5,6 +5,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { multipartInterceptor } from './interceptors/multipart.interceptor';
 import { AuthService } from './services/auth.service';
 import { CommandeService } from './services/commande.service';
 import { OfferService } from './services/offer.service';
@@ -18,7 +19,10 @@ export const appConfig: ApplicationConfig = {
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([
+      multipartInterceptor,
+      authInterceptor
+    ])),
     AuthService,
     CommandeService,
     OfferService
