@@ -54,14 +54,8 @@ export class LoginModalComponent {
                 if (user) {
                   this.isLoading = false;
                   this.onClose();
-                  // Navigate based on user role
-                  if (user.role === 'CLIENT') {
-                    this.router.navigate(['/client/dashboard']);
-                  } else if (user.role === 'PATISSIER') {
-                    this.router.navigate(['/patissier/dashboard']);
-                  } else {
-                    this.router.navigate(['/']);
-                  }
+                  // Redirect to landing page after login
+                  this.router.navigate(['/']);
                 }
               },
               error: () => {

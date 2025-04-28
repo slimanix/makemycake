@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gradient-to-b from-rose-50 to-white">
   <!-- Header Section -->
   <div class="bg-[#8B1F48] relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/assets/images/pattern.png')] opacity-10"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(45deg,#f3f4f6_25%,transparent_25%),linear-gradient(-45deg,#f3f4f6_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f3f4f6_75%),linear-gradient(-45deg,transparent_75%,#f3f4f6_75%)] bg-[length:20px_20px] opacity-10"></div>
     <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative">
       <div class="text-center">
         <h1 class="text-4xl font-bold text-white mb-4">Our Patisseries</h1>
@@ -29,23 +29,23 @@
     <!-- Patisseries Grid -->
     <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
       <div *ngFor="let patisserie of patisseries" 
-     class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl">
-     
-  <!-- Image Section -->
-  <div class="relative h-48 bg-gradient-to-br from-pink-100 to-pink-50 overflow-hidden group">
-    <img [src]="patisserie.profilePicture || 'assets/default-patisserie.jpg'" 
-         alt="{{ patisserie.shopName }}"
-         class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110">
-    
-    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
-    
-    <div class="absolute top-4 right-4" *ngIf="patisserie.valid">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 shadow-md">
-        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-        Verified
-      </span>
-    </div>
-  </div>
+           class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl">
+        <!-- Image Section -->
+        <div class="relative h-48 bg-gradient-to-br from-pink-100 to-pink-50 overflow-hidden group">
+          <img [src]="patisserie.profilePicture || 'assets/default-patisserie.jpg'" 
+               alt="{{ patisserie.shopName }}"
+               class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110">
+          
+          <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+          
+          <div class="absolute top-4 right-4" *ngIf="patisserie.valid">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 shadow-md">
+              <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+              Verified
+            </span>
+          </div>
+        </div>
+
         <div class="p-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ patisserie.shopName }}</h2>
           <div class="space-y-4">

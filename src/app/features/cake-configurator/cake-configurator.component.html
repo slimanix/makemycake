@@ -1,0 +1,386 @@
+<!-- Main application wrapper -->
+<div class="app-wrapper">
+    <main>
+      <div class="container">
+        <!-- Cake configurator section -->
+        <div class="configurator">
+          <!-- 3D Viewer Section -->
+          <div class="viewer-section">
+            <div class="viewer-container">
+              <!-- Viewer Header with Controls -->
+              <div class="viewer-header">
+                <div class="viewer-title">
+                  Prévisualisation 3D
+                  <span *ngIf="offerDetails?.patisserie?.shopName" class="ml-4 text-pink-700 text-lg font-semibold">
+                    - {{ offerDetails.patisserie.shopName }}
+                  </span>
+                </div>
+                <div class="view-controls">
+                  <!-- Reset View Button -->
+                  <button class="view-btn" (click)="resetView()" aria-label="Réinitialiser la vue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"></path>
+                      <path d="M12 8v4l3 3"></path>
+                    </svg>
+                  </button>
+                  <!-- Screenshot Button -->
+                  <button class="view-btn" (click)="takeScreenshot()" aria-label="Capture d'écran">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <line x1="20" y1="4" x2="20" y2="4"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Loading Overlay -->
+              <div class="loading-overlay" *ngIf="isLoading">
+                <div class="loading-spinner"></div>
+                <span>Préparation de votre gâteau...</span>
+              </div>
+
+              <!-- 3D Canvas -->
+              <canvas #canvas id="cake-viewer" aria-label="Prévisualisation 3D de votre gâteau"></canvas>
+
+              <!-- Touch Controls for Mobile -->
+              <div class="touch-controls">
+                <button class="touch-btn" (click)="rotateLeft(Math.PI / 8)" aria-label="Tourner à gauche">
+                  <i class="fas fa-rotate-left"></i>
+                </button>
+                <button class="touch-btn" (click)="rotateRight(Math.PI / 8)" aria-label="Tourner à droite">
+                  <i class="fas fa-rotate-right"></i>
+                </button>
+                <button class="touch-btn" (click)="zoomIn(1.2)" aria-label="Zoom avant">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+                <button class="touch-btn" (click)="zoomOut(1.2)" aria-label="Zoom arrière">
+                  <i class="fas fa-search-minus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Configuration Controls -->
+          <div class="controls-container">
+            <form [formGroup]="cakeForm">
+              <!-- Number of People Selection -->
+              <div class="control-card">
+                <div class="control-header">
+                  <h3 class="controls-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Nombre de Personnes
+                  </h3>
+                </div>
+                <!-- People Options Grid -->
+                <div class="control-body">
+                  <div class="option-grid" role="group" aria-labelledby="people-heading">
+                    <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 2" (click)="selectPeople(2)">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                      <div class="option-name">2 personnes</div>
+                      <div class="option-price">{{ offerDetails?.prix}} DHS</div>
+                    </button>
+                    <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 4" (click)="selectPeople(4)">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                      </div>
+                      <div class="option-name">4 personnes</div>
+                      <div class="option-price">{{ offerDetails?.prix * 2}} DHS</div>
+                    </button>
+                    <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 6" (click)="selectPeople(6)">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                      </div>
+                      <div class="option-name">6 personnes</div>
+                      <div class="option-price">{{ offerDetails?.prix * 3}} DHS</div>
+                    </button>
+                    <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 8" (click)="selectPeople(8)">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                      </div>
+                      <div class="option-name">8 personnes</div>
+                      <div class="option-price">{{ offerDetails?.prix * 4}} DHS</div>
+                    </button>
+                  </div>
+                  <!-- Validation Error Message -->
+                  <div class="form-error" *ngIf="cakeForm.hasError('peopleRequired')">
+                    Veuillez sélectionner le nombre de personnes
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Cake Layers Configuration -->
+              <div class="control-card">
+                <div class="control-header">
+                  <h3 class="controls-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                      <line x1="3" y1="9" x2="21" y2="9"></line>
+                      <line x1="3" y1="15" x2="21" y2="15"></line>
+                    </svg>
+                    Couches
+                  </h3>
+                </div>
+                <div class="control-body">
+                  <div id="layers-container" class="layers-container">
+                    <div class="layer-control" *ngFor="let layer of currentDesign.couches; let i = index">
+                      <div class="layer-header">
+                        <div class="layer-title">
+                          <span class="layer-number">{{i + 1}}</span>
+                          Couche {{i + 1}}
+                        </div>
+                        <button class="remove-layer" (click)="removeLayer(i)" *ngIf="currentDesign.couches.length > 1">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="layer-options">
+                        <div class="option-group">
+                          <label class="option-label" [for]="'flavor-' + i">Saveur</label>
+                          <select [id]="'flavor-' + i" class="layer-flavor" [(ngModel)]="layer.saveur" [ngModelOptions]="{standalone: true}" (change)="updateLayer(i)">
+                            <option value="vanille">Vanille</option>
+                            <option value="chocolat">Chocolat</option>
+                            <option value="pistache">Pistache</option>
+                            <option value="caramel">Caramel</option>
+                            <option value="redvelvet">Red Velvet</option>
+                          </select>
+                        </div>
+                        <div class="option-group">
+                          <label class="option-label" [for]="'thickness-' + i">Épaisseur</label>
+                          <div class="thickness-control">
+                            <input [id]="'thickness-' + i" type="range" class="layer-thickness" [(ngModel)]="layer.epaisseur" [ngModelOptions]="{standalone: true}" min="2" max="6" step="0.5" (input)="updateLayer(i)">
+                            <span class="thickness-value">{{layer.epaisseur}} cm</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-outline btn-block" (click)="addLayer()" [disabled]="currentDesign.couches.length >= 5">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="16"></line>
+                      <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    Ajouter une Couche
+                  </button>
+                </div>
+              </div>
+  
+              <!-- Frosting Selection -->
+              <div class="control-card">
+                <div class="control-header">
+                  <h3 class="controls-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 2v6.5l3-3"></path>
+                      <path d="M9 6.5l3 3"></path>
+                      <path d="M18 9H6a6 6 0 0 0 0 12h12a6 6 0 0 0 0-12z"></path>
+                    </svg>
+                    Glacage
+                  </h3>
+                </div>
+                <div class="control-body">
+                  <div class="option-grid" role="group" aria-labelledby="glacage-heading">
+                    <button type="button" class="option-card" [class.selected]="currentDesign.glacage === null" (click)="selectGlacage(null)">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="8" y1="8" x2="16" y2="16"></line>
+                          <line x1="8" y1="16" x2="16" y2="8"></line>
+                        </svg>
+                      </div>
+                      <div class="option-name">Sans Glacage</div>
+                      <div class="option-price">0 DHS</div>
+                    </button>
+                    <button type="button" class="option-card" [class.selected]="currentDesign.glacage === 'fondant'" (click)="selectGlacage('fondant')">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        </svg>
+                      </div>
+                      <div class="option-name">Fondant Royal</div>
+                      <div class="option-price">200 DHS</div>
+                    </button>
+                    <button type="button" class="option-card" [class.selected]="currentDesign.glacage === 'ganache'" (click)="selectGlacage('ganache')">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                          <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                          <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                      </div>
+                      <div class="option-name">Ganache Chocolat</div>
+                      <div class="option-price">150 DHS</div>
+                    </button>
+                    <button type="button" class="option-card" [class.selected]="currentDesign.glacage === 'creme'" (click)="selectGlacage('creme')">
+                      <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                          <line x1="6" y1="1" x2="6" y2="4"></line>
+                          <line x1="10" y1="1" x2="10" y2="4"></line>
+                          <line x1="14" y1="1" x2="14" y2="4"></line>
+                        </svg>
+                      </div>
+                      <div class="option-name">Crème au Beurre</div>
+                      <div class="option-price">100 DHS</div>
+                    </button>
+                  </div>
+                  <div class="form-error" *ngIf="cakeForm.hasError('glacageRequired')">
+                    Veuillez sélectionner un type de glacage
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Contact Information -->
+              <div class="control-card">
+                <div class="control-header">
+                  <h3 class="controls-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    Coordonnées
+                  </h3>
+                </div>
+                <div class="control-body">
+                  <div class="form-group">
+                    <label for="phone-input" class="form-label">Numéro de téléphone</label>
+                    <input type="tel" id="phone-input" class="form-control" formControlName="telephone" placeholder="+212612345678">
+                    <div class="form-error" *ngIf="cakeForm.get('telephone')?.invalid && cakeForm.get('telephone')?.touched">
+                      Veuillez entrer un numéro marocain valide (ex: +212612345678)
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Order Summary -->
+              <div class="summary">
+                <div class="summary-header">
+                  <h3 class="summary-title">Résumé de Commande</h3>
+                </div>
+                <!-- Price Breakdown -->
+                <div class="summary-body">
+                  <div class="summary-row">
+                    <span class="summary-label">Base</span>
+                    <span class="summary-value">{{calculateBasePrice()}} DHS</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="summary-label">Couches</span>
+                    <span class="summary-value">{{calculateLayersPrice()}} DHS</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="summary-label">Glacage</span>
+                    <span class="summary-value">{{calculateGlacagePrice()}} DHS</span>
+                  </div>
+                  <div class="summary-row summary-total">
+                    <span class="summary-label">Total</span>
+                    <span class="summary-value">{{calculateTotalPrice()}} DHS</span>
+                  </div>
+  
+                  <!-- Action Buttons -->
+                  <div class="actions">
+                    <button type="button" class="btn btn-outline" (click)="saveDesign()">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                      </svg>
+                      Sauvegarder
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="sendCommande()" [disabled]="!cakeForm.valid || isCommandeLoading">
+                      <span *ngIf="isCommandeLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                      {{ isCommandeLoading ? 'Envoi...' : 'Commander' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<!-- Commande Confirmation Modal -->
+<div *ngIf="isCommandeModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-pink-200">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-violet-600 to-pink-500 p-6 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <svg class="h-8 w-8 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" stroke-width="2" stroke="currentColor" fill="white"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4-4" stroke="green"/>
+        </svg>
+        <h2 class="text-2xl font-bold text-white">Commande envoyée !</h2>
+      </div>
+      <button (click)="closeCommandeModal()" class="text-white hover:text-gray-200 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <!-- Body -->
+    <div class="p-6">
+      <div class="mb-4 flex items-center space-x-2">
+        <svg class="h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-green-700 font-semibold">Votre commande a bien été envoyée !</span>
+      </div>
+      <div class="mb-4">
+        <h3 class="font-semibold text-pink-700 mb-2">Détails de la commande :</h3>
+        <div class="bg-gray-50 rounded-lg p-4 shadow-inner">
+          <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+            <div class="font-medium text-gray-600">Nombre de personnes:</div>
+            <div class="text-gray-900">{{ lastCommandeData?.nombrePersonnes }}</div>
+            <div class="font-medium text-gray-600">Glacage:</div>
+            <div class="text-gray-900 capitalize">{{ lastCommandeData?.glacage }}</div>
+            <div class="font-medium text-gray-600">Téléphone:</div>
+            <div class="text-gray-900">{{ lastCommandeData?.telephone }}</div>
+            <div class="font-medium text-gray-600">Couches:</div>
+            <div>
+              <ul class="list-disc list-inside text-gray-900">
+                <li *ngFor="let couche of lastCommandeData?.couches">
+                  {{ couche.saveur | titlecase }} ({{ couche.epaisseur }} cm)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button (click)="closeCommandeModal()" class="w-full bg-gradient-to-r from-violet-600 to-pink-500 text-white px-4 py-2 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400 transition-all mb-2">
+        Fermer
+      </button>
+      <a routerLink="/mes-commandes" class="w-full inline-block text-center bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400 transition-all">
+        Voir mes commandes
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,171 @@
+<div class="patissier-commandes-wrapper bg-white rounded-lg shadow p-8 my-8">
+  <h2 class="text-2xl font-bold mb-6 text-pink-700">Commandes reçues</h2>
+
+  <div class="filter-row mb-6 flex items-center gap-4">
+    <label for="status-select" class="font-medium text-gray-700">Filtrer par statut :</label>
+    <select id="statut-select" [(ngModel)]="selectedStatut" (ngModelChange)="currentPage = 1" class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 bg-gray-50 text-pink-700 font-medium">
+      <option value="">Tous les statuts</option>
+      <option value="EN_ATTENTE">En attente</option>
+      <option value="PREPARATION">Préparation</option>
+      <option value="LIVRAISON">Livraison</option>
+      <option value="TERMINEE">Terminée</option>
+      <option value="ANNULEE">Annulée</option>
+    </select>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-8 text-gray-500">Chargement des commandes...</div>
+  <div *ngIf="error" class="text-center py-8 text-red-500">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error && paginatedCommandes.length === 0" class="text-center text-gray-500 py-8">
+    Aucune commande trouvée.
+  </div>
+
+  <div *ngIf="!isLoading && paginatedCommandes.length > 0">
+    <div class="commandes-list flex flex-col gap-6">
+      <div *ngFor="let commande of paginatedCommandes" class="commande-card bg-pink-50 rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border border-pink-100 hover:shadow-md transition-shadow">
+        <div class="flex flex-col md:flex-row md:items-center gap-4 flex-1">
+          <div class="commande-date text-gray-500 font-medium min-w-[120px]">{{ commande.dateCreation | date:'short' }}</div>
+          <div class="commande-client font-semibold text-pink-800 min-w-[160px]">{{ commande.client.fullName }}</div>
+          <div class="commande-telephone text-gray-700 min-w-[120px]">{{ commande.client.telephone }}</div>
+        </div>
+        <div class="flex items-center gap-6 mt-2 md:mt-0">
+          <div class="commande-montant font-bold text-lg text-gray-900">{{ commande.montantTotal | number:'1.2-2' }} DH</div>
+          <span class="commande-statut ml-2 px-3 py-1 rounded-full text-sm font-semibold"
+            [ngClass]="{
+              'statut-annulee': commande.statut.trim().toUpperCase() === 'ANNULEE',
+              'statut-en-cours': commande.statut.trim().toUpperCase() === 'EN_COURS',
+              'statut-attente': commande.statut.trim().toUpperCase() === 'EN_ATTENTE',
+              'statut-preparation': commande.statut.trim().toUpperCase() === 'PREPARATION',
+              'statut-livraison': commande.statut.trim().toUpperCase() === 'LIVRAISON',
+              'statut-terminee': commande.statut.trim().toUpperCase() === 'TERMINEE'
+            }">
+            {{ commande.statut.trim() }}
+          </span>
+          <button *ngIf="commande.statut.trim().toUpperCase() === 'PREPARATION' && livraisonSuccessId !== commande.id" (click)="livrerCommande(commande.id)" [disabled]="livraisonLoadingId === commande.id" class="ml-4 bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 transition flex items-center">
+            <span *ngIf="livraisonLoadingId !== commande.id">Livrer</span>
+            <span *ngIf="livraisonLoadingId === commande.id" class="animate-spin mr-2">⏳</span>
+            <span *ngIf="livraisonLoadingId === commande.id">Livraison...</span>
+          </button>
+          <span *ngIf="livraisonSuccessId === commande.id" class="text-green-600 ml-2 font-semibold">Statut changé à LIVRAISON !</span>
+          <span *ngIf="livraisonError && livraisonLoadingId === commande.id" class="text-red-600 ml-2">{{ livraisonError }}</span>
+
+          <button *ngIf="commande.statut.trim().toUpperCase() === 'LIVRAISON' && receivedSuccessId !== commande.id" (click)="receivedCommande(commande.id)" [disabled]="receivedLoadingId === commande.id" class="ml-4 bg-green-600 text-white px-4 py-2 rounded font-semibold hover:bg-green-700 transition flex items-center">
+            <span *ngIf="receivedLoadingId !== commande.id">Received</span>
+            <span *ngIf="receivedLoadingId === commande.id" class="animate-spin mr-2">⏳</span>
+            <span *ngIf="receivedLoadingId === commande.id">Confirmation...</span>
+          </button>
+          <span *ngIf="receivedSuccessId === commande.id" class="text-green-600 ml-2 font-semibold">Statut changé à TERMINÉE !</span>
+          <span *ngIf="receivedError && receivedLoadingId === commande.id" class="text-red-600 ml-2">{{ receivedError }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination controls -->
+    <div class="flex justify-center items-center space-x-2 mt-8">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">&lt;</button>
+      <ng-container *ngFor="let page of [].constructor(totalPages); let idx = index">
+        <button (click)="goToPage(idx + 1)" [class.bg-pink-600]="currentPage === idx + 1" [class.text-white]="currentPage === idx + 1" class="px-3 py-1 rounded hover:bg-pink-100" [disabled]="currentPage === idx + 1">{{ idx + 1 }}</button>
+      </ng-container>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">&gt;</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="livraisonSuccessId" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md text-center">
+    <h3 class="text-2xl font-bold mb-4 text-green-700">Commande livrée avec succès !</h3>
+    <div class="text-green-600 text-lg font-semibold">Le statut de la commande a été changé à LIVRAISON.</div>
+  </div>
+</div>
+
+<div *ngIf="receivedSuccessId" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md text-center">
+    <h3 class="text-2xl font-bold mb-4 text-green-700">Commande terminée avec succès !</h3>
+    <div class="text-green-600 text-lg font-semibold">Le statut de la commande a été changé à TERMINÉE.</div>
+  </div>
+</div>
+
+<style>
+.patissier-commandes-wrapper {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 4px 0 rgba(219,39,119,0.07);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+.commandes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.commande-card {
+  background: #fdf2f8;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 4px 0 rgba(219,39,119,0.07);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid #fbcfe8;
+  transition: box-shadow 0.2s;
+}
+.commande-card:hover {
+  box-shadow: 0 4px 16px 0 rgba(219,39,119,0.13);
+}
+.commande-date {
+  color: #6b7280;
+  font-size: 1rem;
+}
+.commande-client {
+  font-weight: 600;
+  color: #db2777;
+}
+.commande-telephone {
+  color: #4b5563;
+  font-size: 1rem;
+}
+.commande-montant {
+  font-weight: 600;
+  color: #1f2937;
+}
+.commande-statut {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  background: #fdf2f8;
+}
+.statut-annulee {
+  color: #dc2626;
+  background: #fee2e2;
+}
+.statut-en-cours {
+  color: #f59e42;
+  background: #fef9c3;
+}
+.statut-attente {
+  color: #b45309;
+  background: #fef9c3;
+}
+.statut-preparation {
+  color: #2563eb;
+  background: #dbeafe;
+}
+.statut-livraison {
+  color: #7c3aed;
+  background: #ede9fe;
+}
+.statut-terminee {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+.filter-row select {
+  min-width: 160px;
+  background: #f9fafb;
+  border: 1px solid #fbcfe8;
+  color: #db2777;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s;
+}
+</style> 

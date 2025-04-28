@@ -148,4 +148,16 @@ export class AuthService {
       params: { token }
     });
   }
+
+  hasClientRole(): boolean {
+    const user = this.currentUserSubject.value;
+    return user?.role === 'CLIENT';
+  }
+
+  triggerLoginPopup(): void {
+    // Implement your login popup logic here
+    // This could be a modal, redirect to login page, etc.
+    // For now, we'll just log a message
+    console.log('Login popup triggered');
+  }
 }

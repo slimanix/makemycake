@@ -15,6 +15,17 @@ export interface Offer {
   patisserieNom?: string;
   validatedByAdminId?: number;
   validatedByAdminName?: string;
+  client?: {
+    id: number;
+    username: string;
+  };
+  cake?: {
+    id: number;
+    name: string;
+  };
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  createdAt: string;
+  price: number;
 }
 
 export interface OfferRequest {
@@ -112,6 +123,24 @@ export class OfferService {
         console.error(`Error fetching offer with ID ${id}:`, error);
         return this.handleError(error);
       })
+    );
+  }
+
+  acceptOffer(id: number): Observable<Offer> {
+    return this.http.put<Offer>(`${this.apiUrl}/${id}/accept`, {}).pipe(
+      tap(() => {
+        console.log(`Offer with ID ${id} successfully accepted`);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  rejectOffer(id: number): Observable<Offer> {
+    return this.http.put<Offer>(`${this.apiUrl}/${id}/reject`, {}).pipe(
+      tap(() => {
+        console.log(`Offer with ID ${id} successfully rejected`);
+      }),
+      catchError(this.handleError)
     );
   }
 } 

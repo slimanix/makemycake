@@ -2,22 +2,36 @@
   <h2 class="text-2xl font-bold mb-6 text-gray-800">Create New Offer</h2>
 
   <!-- Loading State -->
-  <div *ngIf="loading" class="text-center py-8">
-    <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#df2050]"></div>
-    <p class="mt-2 text-gray-600">Loading...</p>
+  <div *ngIf="loading" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent"></div>
+      <p class="mt-4 text-gray-700 font-medium">Creating your offer...</p>
+    </div>
   </div>
 
   <!-- Error State -->
-  <div *ngIf="error" class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
-    <p>{{ error }}</p>
+  <div *ngIf="error" class="mb-6 bg-red-50 border-l-4 border-red-400 p-4">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-red-700">{{ error }}</p>
+      </div>
+    </div>
   </div>
 
   <!-- Create Offer Form -->
-  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" *ngIf="!loading" class="space-y-6">
+  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Event Type -->
     <div>
       <label for="typeEvenement" class="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
-      <select class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 px-3 py-2 border"
-              id="typeEvenement" formControlName="typeEvenement">
+      <select 
+        id="typeEvenement" 
+        formControlName="typeEvenement"
+        class="w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 px-3 py-2 border">
         <option value="">Select event type</option>
         <option value="WEDDING">Wedding</option>
         <option value="BIRTHDAY">Birthday</option>
@@ -26,51 +40,98 @@
       </select>
     </div>
 
+    <!-- Custom Event Type (shows only when "Other" is selected) -->
+    <div *ngIf="showCustomEventType" class="animate-fade-in">
+      <label for="customEventType" class="block text-sm font-medium text-gray-700 mb-1">
+        Specify Event Type
+      </label>
+      <input 
+        type="text" 
+        id="customEventType"
+        formControlName="customEventType"
+        class="w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 px-3 py-2 border"
+        placeholder="Enter your event type">
+    </div>
+
+    <!-- Weight -->
     <div>
       <label for="kilos" class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
-      <input type="number" 
-             class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 px-3 py-2 border"
-             id="kilos" formControlName="kilos" step="0.1" min="0">
+      <input 
+        type="number" 
+        id="kilos" 
+        formControlName="kilos"
+        step="0.1" 
+        min="0"
+        class="w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 px-3 py-2 border"
+        placeholder="Enter cake weight">
     </div>
 
+    <!-- Price -->
     <div>
-      <label for="prix" class="block text-sm font-medium text-gray-700 mb-1">Price</label>
-      <input type="number" 
-             class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 px-3 py-2 border"
-             id="prix" formControlName="prix" step="0.01" min="0">
+      <label for="prix" class="block text-sm font-medium text-gray-700 mb-1">Price (€)</label>
+      <input 
+        type="number" 
+        id="prix" 
+        formControlName="prix"
+        step="0.01" 
+        min="0"
+        class="w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 px-3 py-2 border"
+        placeholder="Enter cake price">
     </div>
 
+    <!-- Photo Upload -->
     <div>
-      <label for="photo" class="block text-sm font-medium text-gray-700 mb-1">Cake Photo</label>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Cake Photo</label>
       <div class="mt-1 flex items-center">
-        <label for="photo" class="cursor-pointer">
-          <span class="px-4 py-2 bg-white rounded-md border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500">
-            Choose File
-          </span>
-          <input type="file" class="sr-only" id="photo" (change)="onFileSelected($event)" accept="image/*">
+        <label class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Choose Photo
+          <input type="file" class="sr-only" (change)="onFileSelected($event)" accept="image/*">
         </label>
-        <span class="ml-2 text-sm text-gray-500" *ngIf="!selectedFile">No file chosen</span>
-        <span class="ml-2 text-sm text-gray-900" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        <span class="ml-3 text-sm text-gray-500" *ngIf="!selectedFile">No file chosen</span>
+        <span class="ml-3 text-sm text-gray-900" *ngIf="selectedFile">{{ selectedFile.name }}</span>
       </div>
-      <p class="mt-1 text-xs text-gray-500">Please upload a photo of the cake (max 5MB)</p>
+      <p class="mt-1 text-xs text-gray-500">Maximum file size: 5MB</p>
     </div>
 
     <!-- Image Preview -->
     <div *ngIf="previewUrl" class="mt-4">
-      <img [src]="previewUrl" class="rounded-md border border-gray-200 max-h-48">
+      <img [src]="previewUrl" class="rounded-lg border border-gray-200 max-h-48 object-cover">
     </div>
 
-    <div class="flex justify-between pt-4">
-      <button type="button" 
-              class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
-              routerLink="/patissier/offers">
+    <!-- Form Actions -->
+    <div class="flex justify-between pt-6">
+      <button 
+        type="button" 
+        routerLink="/patissier/offers"
+        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
         Cancel
       </button>
-      <button type="submit" 
-              class="px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-[#df2050] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50"
-              [disabled]="!offerForm.valid || !selectedFile">
+      <button 
+        type="submit" 
+        [disabled]="!offerForm.valid || !selectedFile"
+        class="px-6 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
         Create Offer
       </button>
     </div>
   </form>
 </div>
+
+<style>
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

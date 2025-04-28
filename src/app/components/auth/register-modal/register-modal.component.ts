@@ -19,16 +19,17 @@ export class RegisterModalComponent implements OnInit {
 
   registerForm: FormGroup;
   errorMessage: string = '';
-  selectedFile: File | null = null;
-  selectedRole: 'CLIENT' | 'PATISSIER' = 'CLIENT';
   showActivationMessage: boolean = false;
   userEmail: string = '';
+  loading: boolean = false;
+  selectedRole: 'CLIENT' | 'PATISSIER' = 'CLIENT';
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -66,35 +67,29 @@ export class RegisterModalComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const formData = new FormData();
-      const { profilePicture, ...formValue } = this.registerForm.value;
-
-      formData.append('request', new Blob([JSON.stringify(formValue)], {
-        type: 'application/json'
-      }));
-
+      const formData = this.registerForm.value;
+      const formDataObj = new FormData();
+      
+      Object.keys(formData).forEach(key => {
+        formDataObj.append(key, formData[key]);
+      });
+      
       if (this.selectedFile) {
-        formData.append('profileImage', this.selectedFile);
+        formDataObj.append('file', this.selectedFile);
       }
 
-      // Also append fields separately (optional but matches your other component)
-      Object.keys(formValue).forEach(key => {
-        if (formValue[key] !== null && formValue[key] !== undefined) {
-          formData.append(key, formValue[key]);
-        }
-      });
-
-      this.authService.register(formData).subscribe({
-        next: () => {
-          this.userEmail = formValue.email;
+      this.authService.register(formDataObj).subscribe({
+        next: (response) => {
+          this.userEmail = formData.email;
           this.showActivationMessage = true;
           this.notificationService.showSuccess('Registration successful! Please check your email to activate your account.');
         },
         error: (error) => {
+          this.loading = false;
           this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
-          this.notificationService.showError(this.errorMessage);
+          console.error(this.errorMessage);
         }
       });
     }
   }
-}
+} 
