@@ -30,7 +30,7 @@ type RequestData = ClientRequestData | PatissierRequestData;
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -40,6 +40,7 @@ export class RegisterComponent implements OnInit {
   selectedFile: File | null = null;
   selectedRole: 'CLIENT' | 'PATISSIER' = 'CLIENT';
   isLoading: boolean = false;
+  currentStep: number = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -63,6 +64,7 @@ export class RegisterComponent implements OnInit {
 
   onRoleChange(role: 'CLIENT' | 'PATISSIER'): void {
     this.selectedRole = role;
+    this.currentStep = 1; // Reset to first step when changing role
     this.registerForm.patchValue({ role });
     
     // Update validators based on role
@@ -241,5 +243,17 @@ export class RegisterComponent implements OnInit {
         control.markAsTouched();
       }
     });
+  }
+
+  nextStep() {
+    if (this.currentStep < 2) {
+      this.currentStep++;
+    }
+  }
+
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
   }
 }

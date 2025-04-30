@@ -77,3 +77,7 @@ body {
 .toast-warning {
   background-color: #F59E0B !important;
 }
+
+.hero-pattern {
+  background-image: url('assets/images/hero-pattern.svg');
+}

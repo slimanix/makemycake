@@ -24,6 +24,7 @@ export class RegisterModalComponent implements OnInit {
   loading: boolean = false;
   selectedRole: 'CLIENT' | 'PATISSIER' = 'CLIENT';
   selectedFile: File | null = null;
+  currentStep: number = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,7 @@ export class RegisterModalComponent implements OnInit {
 
   onRoleChange(role: 'CLIENT' | 'PATISSIER') {
     this.selectedRole = role;
+    this.currentStep = 1; // Reset to first step when changing role
     this.registerForm.patchValue({ role });
   }
 
@@ -126,6 +128,18 @@ export class RegisterModalComponent implements OnInit {
           console.error(this.errorMessage);
         }
       });
+    }
+  }
+
+  nextStep() {
+    if (this.currentStep < 2) {
+      this.currentStep++;
+    }
+  }
+
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
     }
   }
 } 

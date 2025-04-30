@@ -1,9 +1,21 @@
-<div class="client-commandes-wrapper">
-  <h2 class="title">Mes Commandes</h2>
-  <div class="filter-row mb-6 flex items-center gap-4">
-    <label for="statut-select" class="font-medium text-gray-700">Filtrer par statut :</label>
-    <select id="statut-select" [(ngModel)]="selectedStatut" (ngModelChange)="currentPage = 1" class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300">
-      <option value="">Tous</option>
+<!-- Modern Client Orders Dashboard -->
+<div class="min-h-screen bg-gradient-to-br from-pink-50/50 to-white py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Mes Commandes</h2>
+      <!-- Filter Section -->
+      <div class="bg-white rounded-xl shadow-sm p-4 border border-pink-100">
+        <div class="flex flex-wrap items-center gap-4">
+          <label for="statut-select" class="font-medium text-gray-700 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            Filtrer par statut
+          </label>
+          <select id="statut-select" [(ngModel)]="selectedStatut" (ngModelChange)="currentPage = 1" 
+                  class="flex-1 sm:flex-none min-w-[200px] border border-gray-300 rounded-lg px-4 py-2.5 bg-white focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200">
+            <option value="">Tous les statuts</option>
       <option value="EN_ATTENTE">En attente</option>
       <option value="PREPARATION">Préparation</option>
       <option value="LIVRAISON">Livraison</option>
@@ -11,90 +23,267 @@
       <option value="ANNULEE">Annulée</option>
     </select>
   </div>
-  <div *ngIf="isLoading" class="loading">Chargement des commandes...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
-  <div *ngIf="!isLoading && !error && filteredCommandes.length === 0" class="empty">Aucune commande trouvée.</div>
-  <div *ngIf="!isLoading && paginatedCommandes.length > 0">
-    <div class="commandes-list flex flex-col gap-6">
-      <div *ngFor="let commande of paginatedCommandes" class="commande-card bg-pink-50 rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border border-pink-100 hover:shadow-md transition-shadow">
-        <div class="flex flex-col md:flex-row md:items-center gap-4 flex-1">
-          <div class="commande-patisserie font-semibold text-pink-800 min-w-[160px]">{{ commande.patisserieNom }}</div>
-          <div class="commande-date text-gray-500 font-medium min-w-[120px]">{{ commande.dateCreation | date:'short' }}</div>
-          <div class="commande-montant font-bold text-lg text-gray-900">{{ commande.montantTotal | number:'1.2-2' }} DHS</div>
-          <div class="commande-telephone text-gray-700 min-w-[120px]">{{ commande.client.telephone || commande.telephoneClient }}</div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+      <div class="flex items-center">
+        <svg class="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-red-700">{{ error }}</p>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !error && filteredCommandes.length === 0" 
+         class="bg-gray-50 rounded-xl p-8 text-center">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">Aucune commande trouvée</h3>
+      <p class="mt-2 text-gray-500">Vos commandes apparaîtront ici une fois que vous en aurez passé.</p>
+    </div>
+
+    <!-- Orders List -->
+    <div *ngIf="!isLoading && paginatedCommandes.length > 0" class="space-y-4">
+      <div *ngFor="let commande of paginatedCommandes" 
+           class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-pink-100 overflow-hidden">
+        <div class="p-6">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <!-- Order Info -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
+              <div class="flex items-center space-x-4">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-900">{{ commande.patisserieNom }}</h4>
+                  <p class="text-sm text-gray-500">{{ commande.dateCreation | date:'short' }}</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="text-2xl font-bold text-pink-600">{{ commande.montantTotal | number:'1.2-2' }} DHS</div>
+                <div class="text-gray-600">{{ commande.client.telephone || commande.telephoneClient }}</div>
+              </div>
         </div>
-        <div class="flex items-center gap-6 mt-2 md:mt-0">
-          <span class="commande-statut ml-2 px-3 py-1 rounded-full text-sm font-semibold"
+
+            <!-- Status and Actions -->
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold"
             [ngClass]="{
-              'statut-annulee': commande.statut.trim().toUpperCase() === 'ANNULEE',
-              'statut-validee': commande.statut.trim().toUpperCase() === 'VALIDEE',
-              'statut-en-cours': commande.statut.trim().toUpperCase() === 'EN_COURS',
-              'statut-attente': commande.statut.trim().toUpperCase() === 'EN_ATTENTE',
-              'statut-preparation': commande.statut.trim().toUpperCase() === 'PREPARATION',
-              'statut-livraison': commande.statut.trim().toUpperCase() === 'LIVRAISON',
-              'statut-terminee': commande.statut.trim().toUpperCase() === 'TERMINEE'
+                  'bg-red-100 text-red-800': commande.statut.trim().toUpperCase() === 'ANNULEE',
+                  'bg-green-100 text-green-800': commande.statut.trim().toUpperCase() === 'VALIDEE',
+                  'bg-blue-100 text-blue-800': commande.statut.trim().toUpperCase() === 'EN_COURS',
+                  'bg-yellow-100 text-yellow-800': commande.statut.trim().toUpperCase() === 'EN_ATTENTE',
+                  'bg-purple-100 text-purple-800': commande.statut.trim().toUpperCase() === 'PREPARATION',
+                  'bg-indigo-100 text-indigo-800': commande.statut.trim().toUpperCase() === 'LIVRAISON',
+                  'bg-teal-100 text-teal-800': commande.statut.trim().toUpperCase() === 'TERMINEE'
             }">
             {{ commande.statut.trim() }}
           </span>
-          <button *ngIf="commande.statut === 'EN_ATTENTE'" (click)="openPaymentModal(commande.id)" class="bg-green-600 text-white px-4 py-2 rounded font-semibold hover:bg-green-700 transition">
+
+              <button *ngIf="commande.statut === 'EN_ATTENTE'" 
+                      (click)="openPaymentModal(commande.id)" 
+                      class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-sm hover:shadow">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
             Payer
           </button>
-          <button *ngIf="commande.statut !== 'LIVRAISON' && commande.statut !== 'TERMINEE' && commande.statut !== 'ANNULEE'" (click)="cancelCommande(commande.id)" [disabled]="cancelLoadingId === commande.id" class="ml-2 bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 transition flex items-center">
-            <span *ngIf="cancelLoadingId !== commande.id">Annuler</span>
-            <span *ngIf="cancelLoadingId === commande.id" class="animate-spin mr-2">⏳</span>
-            <span *ngIf="cancelLoadingId === commande.id">Annulation...</span>
+
+              <button *ngIf="commande.statut !== 'LIVRAISON' && commande.statut !== 'TERMINEE' && commande.statut !== 'ANNULEE'" 
+                      (click)="cancelCommande(commande.id)" 
+                      [disabled]="cancelLoadingId === commande.id"
+                      class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed">
+                <span *ngIf="cancelLoadingId !== commande.id">
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Annuler
+                </span>
+                <span *ngIf="cancelLoadingId === commande.id" class="flex items-center">
+                  <svg class="animate-spin -ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Annulation...
+                </span>
           </button>
-          <span *ngIf="cancelSuccessId === commande.id" class="text-green-600 ml-2 font-semibold">Commande annulée !</span>
-          <span *ngIf="cancelError && cancelLoadingId === commande.id" class="text-red-600 ml-2">{{ cancelError }}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- Pagination controls -->
-    <div class="pagination flex justify-center items-center gap-2 mt-6" *ngIf="totalPages > 1">
-      <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-3 py-1 rounded bg-gray-200 text-gray-700 font-semibold hover:bg-pink-100">&laquo;</button>
+
+      <!-- Pagination -->
+      <div class="mt-8 flex justify-center" *ngIf="totalPages > 1">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <button (click)="prevPage()" 
+                  [disabled]="currentPage === 1"
+                  class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span class="sr-only">Previous</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          
       <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
-        <button (click)="goToPage(i + 1)" [class.bg-pink-500]="currentPage === (i + 1)" [class.text-white]="currentPage === (i + 1)" class="px-3 py-1 rounded font-semibold" [ngClass]="{'bg-gray-200 text-gray-700 hover:bg-pink-100': currentPage !== (i + 1)}">{{ i + 1 }}</button>
+            <button (click)="goToPage(i + 1)"
+                    [class.bg-pink-50]="currentPage === (i + 1)"
+                    [class.border-pink-500]="currentPage === (i + 1)"
+                    [class.text-pink-600]="currentPage === (i + 1)"
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 transition-colors duration-200">
+              {{ i + 1 }}
+            </button>
       </ng-container>
-      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-3 py-1 rounded bg-gray-200 text-gray-700 font-semibold hover:bg-pink-100">&raquo;</button>
+
+          <button (click)="nextPage()"
+                  [disabled]="currentPage === totalPages"
+                  class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span class="sr-only">Next</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </nav>
+      </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="showPaymentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
-    <button (click)="closePaymentModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-xl">&times;</button>
-    <h3 class="text-xl font-bold mb-4 text-pink-700">Paiement de la commande #{{ paymentCommandeId }}</h3>
-    <form (ngSubmit)="submitPayment()" *ngIf="!paymentSuccess">
-      <div class="mb-4">
-        <label class="block text-gray-700 font-medium mb-1">Numéro de carte</label>
-        <input type="text" [(ngModel)]="paymentForm.numeroCarte" name="numeroCarte" maxlength="19" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300" required autocomplete="cc-number">
+<!-- Payment Modal -->
+<div *ngIf="showPaymentModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="absolute top-0 right-0 pt-4 pr-4">
+        <button type="button" (click)="closePaymentModal()" class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500">
+          <span class="sr-only">Close</span>
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
-      <div class="mb-4 flex gap-4">
-        <div class="flex-1">
-          <label class="block text-gray-700 font-medium mb-1">Date d'expiration</label>
-          <input type="text" [(ngModel)]="paymentForm.dateExpiration" name="dateExpiration" maxlength="5" placeholder="MM/AA" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300" required autocomplete="cc-exp">
+      
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-pink-100 sm:mx-0 sm:h-10 sm:w-10">
+            <svg class="h-6 w-6 text-pink-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          </div>
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+              Paiement de la commande #{{ paymentCommandeId }}
+            </h3>
+            <div class="mt-4">
+              <form (ngSubmit)="submitPayment()" *ngIf="!paymentSuccess" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Numéro de carte</label>
+                  <div class="mt-1 relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      </svg>
+                    </div>
+                    <input type="text" [(ngModel)]="paymentForm.numeroCarte" name="numeroCarte" maxlength="19"
+                           class="focus:ring-pink-500 focus:border-pink-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                           placeholder="1234 5678 9012 3456" required>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700">Date d'expiration</label>
+                    <input type="text" [(ngModel)]="paymentForm.dateExpiration" name="dateExpiration" maxlength="5"
+                           class="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                           placeholder="MM/AA" required>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700">CVV</label>
+                    <input type="password" [(ngModel)]="paymentForm.cvv" name="cvv" maxlength="4"
+                           class="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                           placeholder="123" required>
+                  </div>
+                </div>
+
+                <div *ngIf="paymentError" class="rounded-md bg-red-50 p-4">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">{{ paymentError }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" [disabled]="paymentLoading"
+                        class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                  <span *ngIf="!paymentLoading">Procéder au paiement</span>
+                  <span *ngIf="paymentLoading" class="flex items-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Traitement en cours...
+                  </span>
+                </button>
+              </form>
+
+              <div *ngIf="paymentSuccess" class="text-center py-6">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                  <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 class="mt-3 text-lg font-medium text-gray-900">Paiement réussi !</h3>
+                <p class="mt-2 text-sm text-gray-500">Votre commande a été confirmée avec succès.</p>
+              </div>
+            </div>
         </div>
-        <div class="flex-1">
-          <label class="block text-gray-700 font-medium mb-1">CVV</label>
-          <input type="password" [(ngModel)]="paymentForm.cvv" name="cvv" maxlength="4" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300" required autocomplete="cc-csc">
         </div>
       </div>
-      <div *ngIf="paymentError" class="text-red-600 mb-2">{{ paymentError }}</div>
-      <button type="submit" [disabled]="paymentLoading" class="w-full bg-pink-600 text-white font-semibold py-2 rounded hover:bg-pink-700 transition disabled:opacity-60">
-        <span *ngIf="!paymentLoading">Payer</span>
-        <span *ngIf="paymentLoading" class="animate-spin inline-block mr-2">⏳</span>
-        <span *ngIf="paymentLoading">Paiement...</span>
-      </button>
-    </form>
-    <div *ngIf="paymentSuccess" class="text-green-600 text-center font-semibold py-6">
-      Paiement réussi !
     </div>
   </div>
 </div>
 
-<div *ngIf="cancelSuccessId" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md text-center">
-    <h3 class="text-2xl font-bold mb-4 text-red-700">Commande annulée avec succès !</h3>
-    <div class="text-red-600 text-lg font-semibold">Le statut de la commande a été changé à ANNULÉE.</div>
+<!-- Cancel Success Modal -->
+<div *ngIf="cancelSuccessId" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+      <div class="sm:flex sm:items-start">
+        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+          <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Commande annulée avec succès
+          </h3>
+          <div class="mt-2">
+            <p class="text-sm text-gray-500">
+              Le statut de votre commande a été changé à ANNULÉE.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div> 

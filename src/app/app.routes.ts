@@ -20,6 +20,9 @@ import { PatisseriesAccessGuard } from './guards/patisseries-access.guard';
 import { ClientCommandesComponent } from './features/client-commandes/client-commandes.component';
 import { PatissierCommandesComponent } from './features/patissier-commandes/patissier-commandes.component';
 import { PatissierGuard } from './guards/patissier.guard';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { FAQComponent } from './components/faq/faq.component';
 
 export const routes: Routes = [
   { 
@@ -101,5 +104,17 @@ export const routes: Routes = [
 
   { 
     path: 'mes-commandes', component: ClientCommandesComponent 
+  },
+  {
+    path: 'about',
+    component: AboutComponent
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
+  },
+  {
+    path: 'faq',
+    component: FAQComponent
   }
 ];

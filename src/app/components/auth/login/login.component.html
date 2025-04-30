@@ -1,51 +1,108 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Sign in to your account
-      </h2>
-    </div>
-    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div>
-          <label for="email" class="sr-only">Email address</label>
-          <input id="email" name="email" type="email" formControlName="email"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Email address">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#8B1F48]/5 to-[#6B1638]/5 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <!-- Card with Glassmorphism -->
+    <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300">
+      <!-- Header with Gradient Background -->
+      <div class="bg-gradient-to-r from-[#8B1F48] to-[#6B1638] p-6 text-white relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute top-0 left-0 w-32 h-32 bg-pink-300 rounded-full blur-2xl"></div>
+          <div class="absolute bottom-0 right-0 w-32 h-32 bg-purple-300 rounded-full blur-2xl"></div>
         </div>
-        <div>
-          <label for="password" class="sr-only">Password</label>
-          <input id="password" name="password" type="password" formControlName="password"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Password">
+        <div class="relative">
+          <h2 class="text-2xl font-bold tracking-tight text-center">
+            Welcome Back
+          </h2>
+          <p class="mt-2 text-sm text-white/80 text-center">
+            Sign in to your account to continue
+          </p>
         </div>
       </div>
 
-      <div class="flex items-center justify-end">
-        <div class="text-sm">
-          <a routerLink="/auth/forgot-password" class="font-medium text-indigo-600 hover:text-indigo-500">
-            Forgot your password?
-          </a>
-        </div>
-      </div>
+      <div class="p-8">
+        <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email Field -->
+          <div class="space-y-2">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <input type="email" id="email" formControlName="email"
+                     class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                     [class.border-red-500]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                     placeholder="Enter your email">
+            </div>
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Please enter a valid email address
+            </div>
+          </div>
 
-      <div *ngIf="errorMessage" class="text-red-500 text-sm text-center">
-        {{ errorMessage }}
-      </div>
+          <!-- Password Field -->
+          <div class="space-y-2">
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <input type="password" id="password" formControlName="password"
+                     class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                     [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                     placeholder="Enter your password">
+            </div>
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Password is required
+            </div>
+          </div>
 
-      <div>
-        <button type="submit"
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          [disabled]="!loginForm.valid">
-          Sign in
-        </button>
+          <!-- Forgot Password Link -->
+          <div class="text-right">
+            <a routerLink="/auth/forgot-password" 
+               class="text-sm text-[#8B1F48] hover:text-[#6B1638] transition-colors font-medium">
+              Forgot password?
+            </a>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" 
+               class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-start">
+            <svg class="w-5 h-5 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm">{{ errorMessage }}</p>
+          </div>
+
+          <!-- Sign In Button -->
+          <button type="submit"
+                  [disabled]="!loginForm.valid"
+                  class="w-full px-6 py-2.5 bg-gradient-to-r from-[#8B1F48] to-[#6B1638] text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
+            <span>Sign in</span>
+            <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+
+          <!-- Register Link -->
+          <div class="text-center">
+            <a routerLink="/auth/register" 
+               class="text-sm text-[#8B1F48] hover:text-[#6B1638] transition-colors font-medium">
+              Don't have an account? Register
+            </a>
+          </div>
+        </form>
       </div>
-    </form>
-    <div class="text-center">
-      <a routerLink="/auth/register" class="text-indigo-600 hover:text-indigo-500">
-        Don't have an account? Register
-      </a>
     </div>
   </div>
-  
 </div> 

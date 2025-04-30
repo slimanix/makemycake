@@ -1,113 +1,211 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#8B1F48]/5 to-[#6B1638]/5 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <!-- Card with Glassmorphism -->
+    <div
+      class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300">
+      <!-- Header with Gradient Background -->
+      <div class="bg-gradient-to-r from-[#8B1F48] to-[#6B1638] p-6 text-white relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute top-0 left-0 w-32 h-32 bg-pink-300 rounded-full blur-2xl"></div>
+          <div class="absolute bottom-0 right-0 w-32 h-32 bg-purple-300 rounded-full blur-2xl"></div>
+        </div>
+        <div class="relative">
+          <h2 class="text-2xl font-bold tracking-tight text-center">
         Create your account
       </h2>
     </div>
-    <form class="mt-8 space-y-6" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div class="rounded-md shadow-sm -space-y-px">
+      </div>
+
+      <div class="p-8">
+        <form class="space-y-6" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <!-- Role Selection -->
         <div class="flex justify-center space-x-4 mb-4">
           <button type="button"
-            [class]="selectedRole === 'CLIENT' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'"
-            class="px-4 py-2 rounded-md"
-            (click)="onRoleChange('CLIENT')">
+              [class]="selectedRole === 'CLIENT' ? 'bg-gradient-to-r from-[#8B1F48] to-[#6B1638] text-white' : 'bg-gray-200 text-gray-700'"
+              class="px-4 py-2 rounded-lg transition-all duration-300" (click)="onRoleChange('CLIENT')">
             Client
           </button>
           <button type="button"
-            [class]="selectedRole === 'PATISSIER' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'"
-            class="px-4 py-2 rounded-md"
-            (click)="onRoleChange('PATISSIER')">
+              [class]="selectedRole === 'PATISSIER' ? 'bg-gradient-to-r from-[#8B1F48] to-[#6B1638] text-white' : 'bg-gray-200 text-gray-700'"
+              class="px-4 py-2 rounded-lg transition-all duration-300" (click)="onRoleChange('PATISSIER')">
             Patissier
           </button>
         </div>
 
         <!-- Common Fields -->
-        <div>
-          <label for="email" class="sr-only">Email address</label>
-          <input id="email" name="email" type="email" formControlName="email"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Email address">
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <input type="email" id="email" formControlName="email"
+                  class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your email">
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <input type="password" id="password" formControlName="password"
+                  class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your password">
+              </div>
         </div>
-        <div>
-          <label for="password" class="sr-only">Password</label>
-          <input id="password" name="password" type="password" formControlName="password"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Password">
         </div>
 
         <!-- Client Fields -->
-        <div *ngIf="selectedRole === 'CLIENT'">
-          <input name="fullName" type="text" formControlName="fullName"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Full Name">
-          <input name="phoneNumber" type="text" formControlName="phoneNumber"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Phone Number">
-          <input name="address" type="text" formControlName="address"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Address">
+          <div *ngIf="selectedRole === 'CLIENT'" class="space-y-4">
+            <div class="space-y-2">
+              <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+              <input type="text" id="fullName" formControlName="fullName"
+                class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                placeholder="Enter your full name">
+            </div>
+
+            <div class="space-y-2">
+              <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+              <input type="text" id="phoneNumber" formControlName="phoneNumber"
+                class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                placeholder="Enter your phone number">
+            </div>
+
+            <div class="space-y-2">
+              <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+              <input type="text" id="address" formControlName="address"
+                class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                placeholder="Enter your address">
+            </div>
         </div>
 
         <!-- Patissier Fields -->
-        <div *ngIf="selectedRole === 'PATISSIER'">
-          <input name="shopName" type="text" formControlName="shopName"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Shop Name">
-          <input name="phoneNumber" type="text" formControlName="phoneNumber"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Phone Number">
-          
-          <!-- Changed from text input to file input -->
-          <div class="mt-1">
+          <div *ngIf="selectedRole === 'PATISSIER'" class="space-y-4">
+            <!-- Step Indicator -->
+            <div class="flex items-center justify-center space-x-4 mb-6">
+              <div class="flex items-center">
+                <div [class]="currentStep === 1 ? 'bg-[#8B1F48]' : 'bg-gray-300'"
+                  class="w-8 h-8 rounded-full flex items-center justify-center text-white font-medium transition-colors duration-300">
+                  1
+                </div>
+                <div class="w-16 h-1 mx-2" [class]="currentStep === 2 ? 'bg-[#8B1F48]' : 'bg-gray-300'"></div>
+                <div [class]="currentStep === 2 ? 'bg-[#8B1F48]' : 'bg-gray-300'"
+                  class="w-8 h-8 rounded-full flex items-center justify-center text-white font-medium transition-colors duration-300">
+                  2
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 1 -->
+            <div *ngIf="currentStep === 1" class="space-y-4">
+              <div class="space-y-2">
+                <label for="shopName" class="block text-sm font-medium text-gray-700">Shop Name</label>
+                <input type="text" id="shopName" formControlName="shopName"
+                  class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your shop name">
+              </div>
+
+              <div class="space-y-2">
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input type="text" id="phoneNumber" formControlName="phoneNumber"
+                  class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your phone number">
+              </div>
+
+              <button type="button" (click)="nextStep()"
+                class="w-full px-6 py-2.5 bg-gradient-to-r from-[#8B1F48] to-[#6B1638] text-white rounded-lg hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl">
+                Continue
+              </button>
+            </div>
+
+            <!-- Step 2 -->
+            <div *ngIf="currentStep === 2" class="space-y-4">
+              <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Shop Profile Picture</label>
-            <input type="file" 
-                   accept="image/jpeg,image/png,image/gif"
-                   (change)="onFileSelected($event)"
-                   class="mt-1 block w-full text-sm text-gray-500
+                <input type="file" accept="image/jpeg,image/png,image/gif" (change)="onFileSelected($event)" class="mt-1 block w-full text-sm text-gray-500
                           file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border-0
+                              file:rounded-lg file:border-0
                           file:text-sm file:font-semibold
-                          file:bg-indigo-50 file:text-indigo-700
-                          hover:file:bg-indigo-100">
+                              file:bg-[#8B1F48] file:text-white
+                              hover:file:bg-[#6B1638] transition-all duration-300">
             <p class="mt-1 text-sm text-gray-500">
               Upload a shop profile picture (JPEG, PNG, or GIF)
             </p>
           </div>
 
-          <input name="siretNumber" type="text" formControlName="siretNumber"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="SIRET Number">
-          <input name="location" type="text" formControlName="location"
-            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Location">
-        </div>
+              <div class="space-y-2">
+                <label for="siretNumber" class="block text-sm font-medium text-gray-700">SIRET Number</label>
+                <input type="text" id="siretNumber" formControlName="siretNumber"
+                  class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your SIRET number">
       </div>
 
-      <div *ngIf="errorMessage" class="text-red-500 text-sm text-center mb-4">
-        {{ errorMessage }}
+              <div class="space-y-2">
+                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                <input type="text" id="location" formControlName="location"
+                  class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1F48] focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your location">
       </div>
 
-      <div>
-        <button type="submit"
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          [disabled]="!registerForm.valid || isLoading">
+              <div class="flex space-x-4">
+                <button type="button" (click)="previousStep()"
+                  class="w-full px-6 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                  Back
+                </button>
+                <button type="submit" [disabled]="!registerForm.valid || isLoading"
+                  class="w-full px-6 py-2.5 bg-gradient-to-r from-[#8B1F48] to-[#6B1638] text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl">
           <span *ngIf="!isLoading">Register</span>
-          <span *ngIf="isLoading" class="flex items-center">
-            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <span *ngIf="isLoading" class="flex items-center justify-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                      fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                      </path>
             </svg>
             Registering...
           </span>
         </button>
       </div>
-    </form>
-    <div class="text-center">
-      <a routerLink="/auth/login" class="text-indigo-600 hover:text-indigo-500">
-        Already have an account? Sign in
-      </a>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage"
+            class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-start">
+            <svg class="w-5 h-5 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm">{{ errorMessage }}</p>
+          </div>
+
+          <!-- Login Link -->
+          <div class="text-center mt-6">
+            <a routerLink="/auth/login" 
+               class="inline-flex items-center text-sm font-medium text-[#8B1F48] hover:text-[#6B1638] transition-colors duration-200">
+              <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14" />
+              </svg>
+              Already have an account? Sign in
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

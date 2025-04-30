@@ -9,7 +9,7 @@
     <span class="block sm:inline">{{ errorMessage }}</span>
   </div>
 
-  <div *ngIf="!isLoading && !errorMessage" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngIf="!isLoading && !errorMessage" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
     <div *ngFor="let offer of offers" class="bg-white rounded-lg shadow-md overflow-hidden">
       <img [src]="offer.photoUrl" alt="Offer image" class="w-full h-48 object-cover">
       <div class="p-4">

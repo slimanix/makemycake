@@ -1,51 +1,57 @@
-<!-- Modern Landing Page -->
-<div class="min-h-screen bg-gradient-to-b from-rose-50 to-white">
-  <!-- Hero Section with Dynamic Background -->
-  <div class="relative overflow-hidden bg-gradient-to-r from-[#8B1F48] to-[#6B1638]">
-    <!-- Decorative background pattern -->
-    <div class="absolute inset-0">
-      <div class="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.05)_25%,transparent_25%),linear-gradient(-45deg,rgba(255,255,255,0.05)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,rgba(255,255,255,0.05)_75%),linear-gradient(-45deg,transparent_75%,rgba(255,255,255,0.05)_75%)] bg-[length:20px_20px]"></div>
-    </div>
+<!-- Modern, Classy & Animated Landing Page -->
+<div class="min-h-screen bg-gradient-to-b from-rose-50 to-white overflow-x-hidden relative">
+  <!-- Animated Floating SVG Cakes/Confetti -->
+  <svg class="absolute animate-float-cake left-10 top-10 opacity-30 z-0" width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" fill="#F9C8D9" /><text x="50%" y="55%" text-anchor="middle" fill="#8B1F48" font-size="32" font-family="serif" dy=".3em">🎂</text></svg>
+  <svg class="absolute animate-float-cake right-10 top-32 opacity-20 z-0" width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="#FDE2F3" /><text x="50%" y="55%" text-anchor="middle" fill="#E75480" font-size="24" font-family="serif" dy=".3em">🍰</text></svg>
+  <svg class="absolute animate-float-cake left-1/2 bottom-10 opacity-20 z-0" width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="33" fill="#F9C8D9" /><text x="50%" y="55%" text-anchor="middle" fill="#8B1F48" font-size="28" font-family="serif" dy=".3em">🧁</text></svg>
 
-    <!-- Hero Content -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
-      <div class="text-center">
-        <!-- Logo Animation with Glow Effect -->
+  <!-- Hero Section with Parallax Effect -->
+  <div class="relative overflow-hidden min-h-[600px] flex items-center justify-center bg-gradient-to-br from-[#2d112b] via-[#8B1F48] to-[#1a0a16] animate-bg-gradient parallax-section">
+    <!-- Animated Bokeh Lights -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+      <div class="absolute rounded-full bg-pink-300 opacity-30 blur-2xl animate-bokeh1" style="width:180px; height:180px; left:10%; top:15%;"></div>
+      <div class="absolute rounded-full bg-purple-400 opacity-20 blur-2xl animate-bokeh2" style="width:120px; height:120px; right:18%; top:30%;"></div>
+      <div class="absolute rounded-full bg-white opacity-10 blur-3xl animate-bokeh3" style="width:220px; height:220px; left:40%; bottom:10%;"></div>
+      <div class="absolute rounded-full bg-pink-100 opacity-20 blur-2xl animate-bokeh4" style="width:100px; height:100px; right:10%; bottom:18%;"></div>
+      <!-- Subtle Sparkles -->
+      <svg class="absolute left-1/3 top-1/4 animate-sparkle" width="32" height="32"><circle cx="16" cy="16" r="2" fill="#fff" opacity="0.7"/></svg>
+      <svg class="absolute right-1/4 top-1/3 animate-sparkle2" width="24" height="24"><circle cx="12" cy="12" r="1.5" fill="#fff" opacity="0.5"/></svg>
+      <svg class="absolute left-1/2 bottom-1/4 animate-sparkle3" width="20" height="20"><circle cx="10" cy="10" r="1" fill="#fff" opacity="0.4"/></svg>
+    </div>
+    <!-- Hero Content with Scroll Animation -->
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-8 py-24 sm:py-32 lg:py-40 z-10 text-center flex flex-col items-center scroll-animate">
+      <!-- Logo Animation with Glow & Float -->
         <div class="flex justify-center mb-8">
-          <div class="relative group">
-            <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+        <div class="relative group animate-float">
+          <div class="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 rounded-lg blur-xl opacity-40 group-hover:opacity-70 transition duration-1000 animate-glow"></div>
             <img src="assets/images/logo.png" alt="MakeMyCake Logo" 
-                 class="relative h-28 w-auto bg-white rounded-lg p-2 shadow-2xl transform hover:scale-105 transition-all duration-300">
-          </div>
+             class="relative h-32 w-auto bg-white rounded-xl p-3 shadow-2xl transform hover:scale-110 transition-all duration-500 animate-logo-pop">
         </div>
-        
-        <!-- Tagline with Elegant Typography -->
-        <h2 class="text-2xl sm:text-3xl font-medium text-pink-100 mb-8 font-serif italic tracking-wide">
+      </div>
+      <!-- Tagline with Animated Gradient Text -->
+      <h2 class="text-2xl sm:text-3xl font-medium mb-8 font-serif italic tracking-wide bg-gradient-to-r from-pink-200 via-pink-400 to-pink-100 bg-clip-text text-transparent animate-gradient-text drop-shadow-lg scroll-fade-in">
           Where Your World Becomes Sweet
         </h2>
-        
-        <!-- Main Heading with Modern Typography -->
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 font-display bg-clip-text text-transparent bg-gradient-to-r from-white to-pink-100">
+      <!-- Main Heading with Shimmer Effect -->
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 font-display bg-clip-text text-transparent bg-gradient-to-r from-white via-pink-200 to-pink-400 animate-shimmer drop-shadow-xl scroll-fade-in" style="animation-delay: 0.2s;">
           Find Your Perfect Cake
         </h1>
-        
-        <!-- Description with Improved Readability -->
-        <p class="mt-6 max-w-2xl mx-auto text-xl text-pink-100 leading-relaxed font-light">
+      <!-- Description with Fade-in -->
+      <p class="mt-6 max-w-2xl mx-auto text-xl text-pink-100 leading-relaxed font-light animate-fade-in drop-shadow-md scroll-fade-in" style="animation-delay: 0.4s;">
           Connect with the best patisseries in town and order your dream cake for any occasion.
           <span class="block mt-2 text-sm font-medium">Handcrafted with love and expertise</span>
         </p>
-        
-        <!-- Modern CTA Buttons -->
-        <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+      <!-- Modern CTA Buttons with Pulse & Ripple -->
+      <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 scroll-fade-in" style="animation-delay: 0.6s;">
           <a routerLink="/auth/register" 
-             class="group inline-flex items-center justify-center bg-white text-pink-900 px-8 py-4 rounded-full text-lg font-medium hover:bg-pink-50 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+         class="group inline-flex items-center justify-center bg-white text-pink-900 px-8 py-4 rounded-full text-lg font-medium hover:bg-pink-50 transform hover:scale-110 transition-all duration-300 shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-pink-200 animate-pulse-btn">
             <span>Get Started Today</span>
             <svg class="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
           <a routerLink="/patissier/offers/create" 
-             class="group inline-flex items-center justify-center bg-gradient-to-r from-pink-600 to-pink-700 text-white px-8 py-4 rounded-full text-lg font-medium hover:from-pink-700 hover:to-pink-800 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+         class="group inline-flex items-center justify-center bg-gradient-to-r from-pink-600 to-pink-700 text-white px-8 py-4 rounded-full text-lg font-medium hover:from-pink-700 hover:to-pink-800 transform hover:scale-110 transition-all duration-300 shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-pink-400 animate-pulse-btn">
             <span>Create Offer</span>
             <svg class="ml-2 w-5 h-5 transform group-hover:rotate-90 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -55,23 +61,35 @@
       </div>
     </div>
 
-    <!-- Decorative bottom wave -->
-    <div class="absolute bottom-0 left-0 right-0">
-      <svg class="w-full h-12 fill-current text-rose-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
-        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+  <!-- Features Section with Scroll Animation -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 scroll-section">
+    <!-- Animated Section Title -->
+    <div class="text-center mb-14 relative scroll-fade-in">
+      <h2 class="text-6xl sm:text-8xl lg:text-6xl font-bold mb-4 font-display relative inline-block">
+        <span class="relative z-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-pink-700 animate-gradient-text">Why Choose Us</span>
+        <div class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#b366ff]/50 via-[#9933ff]/50 to-[#8000ff]/50 transform -rotate-1 animate-shimmer"></div>
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed font-light" style="animation-delay: 0.2s;">
+        Experience the perfect blend of artistry and taste with our exceptional services
+      </p>
+      <!-- Decorative Elements -->
+      <div class="absolute -left-4 -top-6 w-16 h-16 text-[#b366ff] animate-float" style="animation-delay: 0.1s;">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full opacity-50">
+          <path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+        </svg>
+      </div>
+      <div class="absolute -right-4 -top-6 w-16 h-16 text-[#b366ff] animate-float" style="animation-delay: 0.3s;">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full opacity-50">
+          <path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
       </svg>
     </div>
   </div>
 
-  <!-- Features Section with Modern Cards -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Feature 1: Professional Bakers -->
-      <div class="group p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+      <div class="group p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden animate-fade-in-up feature-card scroll-fade-in">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-pink-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-        <div class="w-16 h-16 mx-auto mb-6 text-pink-600 group-hover:text-pink-700 transition-colors duration-300 relative">
+        <div class="w-16 h-16 mx-auto mb-6 text-pink-600 group-hover:text-pink-700 transition-colors duration-300 relative animate-bounce-in">
           <div class="absolute inset-0 bg-pink-100 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
           <svg class="relative w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -80,11 +98,10 @@
         <h3 class="text-xl font-bold text-gray-900 mb-4 text-center group-hover:text-pink-600 transition-colors duration-300">Professional Bakers</h3>
         <p class="text-gray-600 text-center leading-relaxed">Expert patissiers creating your perfect desserts with years of experience and passion.</p>
       </div>
-
       <!-- Feature 2: Quick Delivery -->
-      <div class="group p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+      <div class="group p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden animate-fade-in-up feature-card scroll-fade-in" style="animation-delay: 0.15s;">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-pink-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-        <div class="w-16 h-16 mx-auto mb-6 text-pink-600 group-hover:text-pink-700 transition-colors duration-300 relative">
+        <div class="w-16 h-16 mx-auto mb-6 text-pink-600 group-hover:text-pink-700 transition-colors duration-300 relative animate-bounce-in">
           <div class="absolute inset-0 bg-pink-100 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
           <svg class="relative w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -93,11 +110,10 @@
         <h3 class="text-xl font-bold text-gray-900 mb-4 text-center group-hover:text-pink-600 transition-colors duration-300">Quick Delivery</h3>
         <p class="text-gray-600 text-center leading-relaxed">Fresh and on-time delivery to your doorstep, ensuring your cake arrives in perfect condition.</p>
       </div>
-
       <!-- Feature 3: Custom Orders -->
-      <div class="group p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+      <div class="group p-8 rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden animate-fade-in-up feature-card scroll-fade-in" style="animation-delay: 0.3s;">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-pink-600 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-        <div class="w-16 h-16 mx-auto mb-6 text-pink-600 group-hover:text-pink-700 transition-colors duration-300 relative">
+        <div class="w-16 h-16 mx-auto mb-6 text-pink-600 group-hover:text-pink-700 transition-colors duration-300 relative animate-bounce-in">
           <div class="absolute inset-0 bg-pink-100 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
           <svg class="relative w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -110,29 +126,77 @@
   </div>
 
   <!-- Featured Offers Section with Enhanced Design -->
-  <div *ngIf="!isPatisserie" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-display relative inline-block">
-        <span class="relative z-10">Featured Offers</span>
-        <div class="absolute bottom-0 left-0 w-full h-3 bg-pink-200 opacity-50 -rotate-1"></div>
+  <div *ngIf="!isPatisserie" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 scroll-section">
+    <div class="text-center mb-16 scroll-fade-in">
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 font-display relative inline-block">
+        <span class="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-pink-700 animate-gradient-text">Featured Offers</span>
+        <div class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#b366ff]/50 via-[#9933ff]/50 to-[#8000ff]/50 transform -rotate-1 animate-shimmer"></div>
       </h2>
-      <p class="text-gray-600 max-w-2xl mx-auto text-lg">Discover our selection of handcrafted cakes from the finest patisseries</p>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto mt-6 leading-relaxed font-light">
+        Discover our selection of handcrafted cakes from the finest patisseries
+      </p>
     </div>
 
-    <!-- Enhanced Filter -->
-    <div class="flex justify-center mb-8">
-      <div class="relative inline-block">
-        <select id="typeEvenement-select" 
-                [(ngModel)]="selectedTypeEvenement" 
-                (ngModelChange)="onTypeEvenementChange()" 
-                class="appearance-none bg-white border-2 border-pink-200 rounded-full px-6 py-2 pr-10 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-gray-700 cursor-pointer">
-          <option value="">All Events</option>
-          <option *ngFor="let type of typeEvenementOptions" [value]="type">{{ type }}</option>
-        </select>
-        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-pink-500">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
+    <!-- Enhanced Filter Section -->
+    <div class="flex justify-center items-center mb-12">
+      <div class="w-full max-w-md px-4">
+        <div class="relative group">
+          <!-- Label with animation -->
+          <label class="absolute -top-2 left-8 px-2 bg-white text-sm font-medium text-pink-600 z-10 transition-all duration-300 group-hover:text-pink-700">
+            Filter by Event Type
+          </label>
+          
+          <!-- Filter Icon -->
+          <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-pink-500 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+          </div>
+
+          <!-- Enhanced Select -->
+          <select 
+            [(ngModel)]="selectedTypeEvenement" 
+            (ngModelChange)="onTypeEvenementChange()"
+            class="w-full pl-12 pr-10 py-4 appearance-none bg-white border-2 border-gray-100 
+                   rounded-2xl text-gray-700 font-medium cursor-pointer focus:outline-none 
+                   focus:border-pink-300 focus:ring-2 focus:ring-pink-100 transition-all duration-300 
+                   shadow-sm hover:shadow-md"
+          >
+            <option value="" class="py-2">All Events</option>
+            <option *ngFor="let type of typeEvenementOptions" [value]="type" class="py-3 px-4">
+              <div class="flex items-center space-x-2">
+                <span class="text-pink-600">{{type}}</span>
+              </div>
+            </option>
+          </select>
+
+          <!-- Dropdown Arrow -->
+          <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400 group-hover:text-pink-500 transition-colors duration-300">
+            <svg class="w-5 h-5 transform group-hover:-translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          <!-- Gradient Border Effect -->
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-200 via-purple-200 to-pink-200 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-300 -z-10"></div>
+        </div>
+
+        <!-- Active Filter Tags -->
+        <div *ngIf="selectedTypeEvenement" class="mt-4 flex justify-center items-center space-x-3 animate-fade-in">
+          <span class="inline-flex items-center px-4 py-2 rounded-xl text-sm bg-gradient-to-r from-pink-50 to-purple-50 text-pink-700 border border-pink-200 shadow-sm">
+            <span class="font-medium">{{selectedTypeEvenement}}</span>
+            <button 
+              (click)="selectedTypeEvenement = ''; onTypeEvenementChange()" 
+              class="ml-2 hover:text-pink-800 focus:outline-none transition-colors duration-300"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </span>
+          <span class="text-sm text-gray-500 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+            {{ filteredOffers.length }} {{ filteredOffers.length === 1 ? 'result' : 'results' }}
+          </span>
         </div>
       </div>
     </div>
@@ -161,36 +225,43 @@
       </div>
     </div>
 
-    <!-- Enhanced Offers Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Enhanced Offers Grid with Animations -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div *ngFor="let offer of paginatedOffers" 
-           class="group bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-        <!-- Image Container with Enhanced Hover Effect -->
-        <div class="relative overflow-hidden aspect-w-16 aspect-h-12">
+           class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 
+                  animate-fade-in-up"
+           [style.animation-delay]="'calc(0.1s * ' + (paginatedOffers.indexOf(offer) % 3) + ')'">
+        <!-- Image Container -->
+        <div class="relative h-48 overflow-hidden rounded-t-2xl">
           <img [src]="offer.photoUrl" 
                [alt]="offer.typeEvenement" 
-               class="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div class="absolute top-4 right-4">
-            <div class="bg-white px-4 py-2 rounded-full shadow-lg transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
-              <span class="text-xl font-bold text-pink-600">€{{ offer.prix }}</span>
-            </div>
+               class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+          <!-- Price Tag - Always Visible -->
+          <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg animate-fade-in">
+            <span class="text-2xl font-bold text-pink-600">€{{ offer.prix }}</span>
           </div>
         </div>
         <!-- Content -->
         <div class="p-6">
-          <div class="mb-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors duration-300">{{ offer.patisserieNom }}</h3>
+          <div class="mb-4 animate-fade-in" style="animation-delay: 0.2s;">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors duration-300">
+              {{ offer.patisserieNom }}
+            </h3>
             <div class="flex items-center space-x-2">
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-100 text-pink-800">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-100 text-pink-800
+                         transform hover:scale-105 transition-transform duration-300">
                 {{ offer.typeEvenement }}
               </span>
+              <span class="text-sm text-gray-500">{{ offer.kilos }}kg</span>
             </div>
           </div>
+          <!-- Button - Always Visible -->
           <button (click)="onConfigureCake(offer.id)" 
-                  class="w-full bg-gradient-to-r from-pink-600 to-pink-700 text-white px-6 py-3 rounded-full font-medium 
-                         hover:from-pink-700 hover:to-pink-800 transform hover:scale-105 transition-all duration-300 
-                         shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                  class="w-full bg-gradient-to-r from-pink-600 to-pink-700 text-white px-6 py-3 rounded-full font-medium bg-gradient-to-br from-[#2d112b] via-[#8B1F48] to-[#1a0a16]
+                         hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 
+                         shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+                         animate-fade-in"
+                  style="animation-delay: 0.3s;">
             Configure Your Cake
           </button>
         </div>
@@ -226,10 +297,10 @@
       </button>
     </div>
 
-    <!-- Enhanced No Offers State -->
+    <!-- No Offers State with Animation -->
     <div *ngIf="filteredOffers.length === 0 && !isLoading && !errorMessage" 
-         class="text-center bg-pink-50 rounded-2xl p-12 max-w-2xl mx-auto border border-pink-100">
-      <div class="w-24 h-24 mx-auto mb-6 text-pink-600">
+         class="text-center bg-pink-50 rounded-2xl p-12 max-w-2xl mx-auto border border-pink-100 animate-fade-in">
+      <div class="w-24 h-24 mx-auto mb-6 text-pink-600 animate-bounce-in">
         <svg class="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -237,8 +308,10 @@
       <h3 class="text-2xl font-bold text-gray-900 mb-2">No Offers Available</h3>
       <p class="text-gray-600 mb-6">We're currently updating our selection. Check back soon for new and exciting cake offers!</p>
       <button (click)="fetchOffers()" 
-              class="inline-flex items-center px-6 py-3 border border-pink-500 text-pink-600 rounded-full hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-300">
-        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              class="inline-flex items-center px-6 py-3 border border-pink-500 text-pink-600 rounded-full 
+                     hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 
+                     transition-all duration-300 animate-pulse-btn">
+        <svg class="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
         Refresh Offers
@@ -253,41 +326,205 @@
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
-
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
-
-@keyframes tilt {
-  0%, 50%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(2deg); }
-  75% { transform: rotate(-2deg); }
+@keyframes float-cake {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
 }
-
-.animate-tilt {
-  animation: tilt 10s infinite linear;
+.animate-float-cake {
+  animation: float-cake 7s ease-in-out infinite;
 }
-
-/* Smooth scrolling for the entire page */
+@keyframes glow {
+  0%, 100% { filter: blur(16px) brightness(1.1); }
+  50% { filter: blur(24px) brightness(1.4); }
+}
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -700px 0; }
+  100% { background-position: 700px 0; }
+}
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+@keyframes gradient-text {
+  0%, 100% { background-position: left; }
+  50% { background-position: right; }
+}
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-text 4s ease-in-out infinite;
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 1.2s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+@keyframes bounce-in {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.animate-bounce-in {
+  animation: bounce-in 1s cubic-bezier(0.68,-0.55,0.27,1.55) both;
+}
+@keyframes logo-pop {
+  0% { transform: scale(0.8) rotate(-8deg); opacity: 0; }
+  60% { transform: scale(1.1) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.animate-logo-pop {
+  animation: logo-pop 1.2s cubic-bezier(0.68,-0.55,0.27,1.55) both;
+}
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
+}
+.animate-pulse-btn {
+  animation: pulse-btn 2s infinite;
+}
+@keyframes bg-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-bg-gradient {
+  background-size: 200% 200%;
+  animation: bg-gradient 10s ease-in-out infinite;
+}
+.feature-card {
+  transition: box-shadow 0.4s, transform 0.4s;
+  will-change: transform, box-shadow;
+}
+.feature-card:hover {
+  box-shadow: 0 12px 32px 0 rgba(236, 72, 153, 0.18), 0 1.5px 6px 0 rgba(107, 22, 56, 0.10);
+  transform: translateY(-8px) scale(1.04) rotate(-1deg);
+}
+@keyframes bokeh1 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.08); }
+}
+.animate-bokeh1 { animation: bokeh1 8s ease-in-out infinite; }
+@keyframes bokeh2 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(20px) scale(1.04); }
+}
+.animate-bokeh2 { animation: bokeh2 7s ease-in-out infinite; }
+@keyframes bokeh3 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-18px) scale(1.06); }
+}
+.animate-bokeh3 { animation: bokeh3 9s ease-in-out infinite; }
+@keyframes bokeh4 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(12px) scale(1.03); }
+}
+.animate-bokeh4 { animation: bokeh4 6s ease-in-out infinite; }
+@keyframes sparkle {
+  0%, 100% { opacity: 0.7; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.3) rotate(20deg); }
+}
+.animate-sparkle { animation: sparkle 3.5s infinite; }
+@keyframes sparkle2 {
+  0%, 100% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.9; transform: scale(1.2) rotate(-15deg); }
+}
+.animate-sparkle2 { animation: sparkle2 4.2s infinite; }
+@keyframes sparkle3 {
+  0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.8; transform: scale(1.1) rotate(10deg); }
+}
+.animate-sparkle3 { animation: sparkle3 3.8s infinite; }
 html {
   scroll-behavior: smooth;
 }
-
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #8B1F48;
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: #6B1638;
 }
-</style> 
+
+/* Scroll Animations */
+.scroll-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.scroll-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Parallax Effect */
+.parallax-section {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Enhanced Animations */
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+}
+
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out forwards;
+}
+</style>
