@@ -1165,23 +1165,8 @@ export class CakeConfiguratorComponent implements OnInit, AfterViewInit, OnDestr
    * @returns The base price in DHS
    */
   calculateBasePrice(): number {
-    if (!this.currentDesign.nombrePersonnes) return 0;
-    
-    const basePricePerPerson = 25;
-    const discountTiers = [
-      { min: 8, discount: 0.15 },
-      { min: 6, discount: 0.1 },
-      { min: 4, discount: 0.05 }
-    ];
-    
-    const applicableTier = discountTiers.find(tier => 
-      this.currentDesign.nombrePersonnes! >= tier.min
-    );
-    
-    const discount = applicableTier ? applicableTier.discount : 0;
-    return Math.round(
-      this.currentDesign.nombrePersonnes * basePricePerPerson * (1 - discount)
-    );
+    if (!this.currentDesign.nombrePersonnes || !this.offerDetails?.prix) return 0;
+    return this.offerDetails.prix * (this.currentDesign.nombrePersonnes / 2);
   }
 
   /**

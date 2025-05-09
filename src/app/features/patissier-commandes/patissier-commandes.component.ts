@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { Subscription } from 'rxjs';
+import { CommandeDetailsModalComponent } from '../../components/commandes/commande-details-modal/commande-details-modal.component';
 
 interface Commande {
   id: number;
@@ -28,7 +29,7 @@ interface Commande {
 @Component({
   selector: 'app-patissier-commandes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CommandeDetailsModalComponent],
   templateUrl: './patissier-commandes.component.html'
 })
 export class PatissierCommandesComponent implements OnInit, OnDestroy {
@@ -46,6 +47,8 @@ export class PatissierCommandesComponent implements OnInit, OnDestroy {
   receivedSuccessId: number|null = null;
   private userSub?: Subscription;
   private notifSub?: Subscription;
+  showDetailsModal = false;
+  selectedCommande: any = null;
 
   constructor(
     private http: HttpClient,
@@ -167,5 +170,15 @@ export class PatissierCommandesComponent implements OnInit, OnDestroy {
         this.receivedLoadingId = null;
       }
     });
+  }
+
+  openDetailsModal(commande: any) {
+    this.selectedCommande = commande;
+    this.showDetailsModal = true;
+  }
+
+  closeDetailsModal() {
+    this.showDetailsModal = false;
+    this.selectedCommande = null;
   }
 } 

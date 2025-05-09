@@ -52,111 +52,125 @@
     </div>
 
     <!-- Orders List -->
-    <div *ngIf="!isLoading && paginatedCommandes.length > 0" class="space-y-4">
+    <div *ngIf="!isLoading && paginatedCommandes.length > 0" class="space-y-6">
       <div *ngFor="let commande of paginatedCommandes" 
-           class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-pink-100 overflow-hidden">
-        <div class="p-6">
-          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <!-- Order Info -->
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
-              <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0">
-                  <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <h4 class="text-lg font-semibold text-gray-900">{{ commande.patisserieNom }}</h4>
-                  <p class="text-sm text-gray-500">{{ commande.dateCreation | date:'short' }}</p>
-                </div>
-              </div>
-              <div class="flex items-center space-x-4">
-                <div class="text-2xl font-bold text-pink-600">{{ commande.montantTotal | number:'1.2-2' }} DH</div>
-                <div class="text-gray-600">{{ commande.client.telephone || commande.telephoneClient }}</div>
-              </div>
-        </div>
-
-            <!-- Status and Actions -->
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold"
-            [ngClass]="{
-                  'bg-red-100 text-red-800': commande.statut.trim().toUpperCase() === 'ANNULEE',
-                  'bg-green-100 text-green-800': commande.statut.trim().toUpperCase() === 'VALIDEE',
-                  'bg-blue-100 text-blue-800': commande.statut.trim().toUpperCase() === 'EN_COURS',
-                  'bg-yellow-100 text-yellow-800': commande.statut.trim().toUpperCase() === 'EN_ATTENTE',
-                  'bg-purple-100 text-purple-800': commande.statut.trim().toUpperCase() === 'PREPARATION',
-                  'bg-indigo-100 text-indigo-800': commande.statut.trim().toUpperCase() === 'LIVRAISON',
-                  'bg-teal-100 text-teal-800': commande.statut.trim().toUpperCase() === 'TERMINEE'
-            }">
-            {{ commande.statut.trim() }}
-          </span>
-
-              <button *ngIf="commande.statut === 'EN_ATTENTE'" 
-                      (click)="openPaymentModal(commande.id)" 
-                      class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-sm hover:shadow">
-                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+           class="bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden transition-all duration-300 transform hover:shadow-lg hover:scale-[1.015]">
+        <div class="p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <!-- Order Info -->
+          <div class="flex items-center gap-4 flex-1 min-w-0">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center">
+                <svg class="w-7 h-7 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-            Payer
-          </button>
-
-              <button *ngIf="commande.statut !== 'LIVRAISON' && commande.statut !== 'TERMINEE' && commande.statut !== 'ANNULEE'" 
-                      (click)="cancelCommande(commande.id)" 
-                      [disabled]="cancelLoadingId === commande.id"
-                      class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed">
-                <span *ngIf="cancelLoadingId !== commande.id">
-                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                  Annuler
-                </span>
-                <span *ngIf="cancelLoadingId === commande.id" class="flex items-center">
-                  <svg class="animate-spin -ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Annulation...
-                </span>
-          </button>
+              </div>
             </div>
+            <div class="min-w-0">
+              <h4 class="text-xl font-bold text-gray-900 truncate">{{ commande.patisserieNom }}</h4>
+              <div class="flex flex-wrap items-center gap-2 mt-1">
+                <span class="text-pink-600 font-bold text-lg">{{ commande.montantTotal | number:'1.2-2' }} DH</span>
+                <span class="text-gray-400 text-xs">•</span>
+                <span class="text-gray-500 text-sm">{{ commande.dateCreation | date:'short' }}</span>
+                <span class="text-gray-400 text-xs">•</span>
+                <span class="text-gray-500 text-sm">{{ commande.client.telephone || commande.telephoneClient }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status and Actions -->
+          <div class="flex flex-col md:flex-row items-end md:items-center gap-3 md:gap-4 mt-4 md:mt-0">
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border"
+              [ngClass]="{
+                'bg-red-50 text-red-700 border-red-200': commande.statut.trim().toUpperCase() === 'ANNULEE',
+                'bg-green-50 text-green-700 border-green-200': commande.statut.trim().toUpperCase() === 'VALIDEE',
+                'bg-blue-50 text-blue-700 border-blue-200': commande.statut.trim().toUpperCase() === 'EN_COURS',
+                'bg-yellow-50 text-yellow-700 border-yellow-200': commande.statut.trim().toUpperCase() === 'EN_ATTENTE',
+                'bg-purple-50 text-purple-700 border-purple-200': commande.statut.trim().toUpperCase() === 'PREPARATION',
+                'bg-indigo-50 text-indigo-700 border-indigo-200': commande.statut.trim().toUpperCase() === 'LIVRAISON',
+                'bg-teal-50 text-teal-700 border-teal-200': commande.statut.trim().toUpperCase() === 'TERMINEE'
+              }">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2" />
+                <path *ngIf="commande.statut.trim().toUpperCase() === 'VALIDEE'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                <path *ngIf="commande.statut.trim().toUpperCase() === 'ANNULEE'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path *ngIf="commande.statut.trim().toUpperCase() === 'EN_ATTENTE'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" />
+              </svg>
+              {{ commande.statut.trim() }}
+            </span>
+
+            <button (click)="openDetailsModal(commande)"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-sm transition-all duration-200"
+              title="Voir les détails de la commande">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Voir détails
+            </button>
+
+            <button *ngIf="commande.statut === 'EN_ATTENTE'" 
+              (click)="openPaymentModal(commande.id)" 
+              class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold shadow-sm transition-all duration-200"
+              title="Payer la commande">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              Payer
+            </button>
+
+            <button *ngIf="commande.statut !== 'LIVRAISON' && commande.statut !== 'TERMINEE' && commande.statut !== 'ANNULEE'" 
+              (click)="cancelCommande(commande.id)" 
+              [disabled]="cancelLoadingId === commande.id"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Annuler la commande">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span *ngIf="cancelLoadingId !== commande.id">Annuler</span>
+              <span *ngIf="cancelLoadingId === commande.id" class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Annulation...
+              </span>
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Pagination -->
-      <div class="mt-8 flex justify-center" *ngIf="totalPages > 1">
-        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <button (click)="prevPage()" 
-                  [disabled]="currentPage === 1"
-                  class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-            <span class="sr-only">Previous</span>
-            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
+    <!-- Pagination -->
+    <div class="mt-8 flex justify-center" *ngIf="totalPages > 1">
+      <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+        <button (click)="prevPage()" 
+                [disabled]="currentPage === 1"
+                class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+          <span class="sr-only">Previous</span>
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        
+    <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button (click)="goToPage(i + 1)"
+                  [class.bg-pink-50]="currentPage === (i + 1)"
+                  [class.border-pink-500]="currentPage === (i + 1)"
+                  [class.text-pink-600]="currentPage === (i + 1)"
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 transition-colors duration-200">
+            {{ i + 1 }}
           </button>
-          
-      <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
-            <button (click)="goToPage(i + 1)"
-                    [class.bg-pink-50]="currentPage === (i + 1)"
-                    [class.border-pink-500]="currentPage === (i + 1)"
-                    [class.text-pink-600]="currentPage === (i + 1)"
-                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 transition-colors duration-200">
-              {{ i + 1 }}
-            </button>
-      </ng-container>
+    </ng-container>
 
-          <button (click)="nextPage()"
-                  [disabled]="currentPage === totalPages"
-                  class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-            <span class="sr-only">Next</span>
-            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-        </nav>
-      </div>
+        <button (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+                class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+          <span class="sr-only">Next</span>
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </nav>
     </div>
   </div>
 </div>
@@ -286,4 +300,11 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+<!-- Details Modal -->
+<app-commande-details-modal
+  *ngIf="showDetailsModal && selectedCommande"
+  [commande]="selectedCommande"
+  (closeModal)="closeDetailsModal()">
+</app-commande-details-modal> 

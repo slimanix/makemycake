@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { CommandeService, CommandeClient } from '../../services/commande.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CommandeDetailsModalComponent } from '../../components/commandes/commande-details-modal/commande-details-modal.component';
 
 @Component({
   selector: 'app-client-commandes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CommandeDetailsModalComponent],
   templateUrl: './client-commandes.component.html',
   styleUrls: ['./client-commandes.component.css']
 })
@@ -33,9 +34,18 @@ export class ClientCommandesComponent implements OnInit {
   cancelError: string|null = null;
   cancelSuccessId: number|null = null;
 
+  // Details modal properties
+  showDetailsModal = false;
+  selectedCommande: CommandeClient | null = null;
+
   constructor(private commandeService: CommandeService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.loadCommandes();
+  }
+
+  loadCommandes() {
+    this.isLoading = true;
     this.commandeService.getClientCommandes().subscribe({
       next: (data) => {
         this.commandes = data.sort((a, b) => new Date(b.dateCreation).getTime() - new Date(a.dateCreation).getTime());
@@ -140,5 +150,15 @@ export class ClientCommandesComponent implements OnInit {
         this.cancelLoadingId = null;
       }
     });
+  }
+
+  openDetailsModal(commande: CommandeClient) {
+    this.selectedCommande = commande;
+    this.showDetailsModal = true;
+  }
+
+  closeDetailsModal() {
+    this.showDetailsModal = false;
+    this.selectedCommande = null;
   }
 } 
