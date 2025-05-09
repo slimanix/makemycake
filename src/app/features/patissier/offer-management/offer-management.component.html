@@ -34,7 +34,7 @@
             <tr *ngFor="let offer of getPaginatedOffers()" class="hover:bg-gray-50 transition-colors duration-200">
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ offer.typeEvenement }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ offer.kilos }} kg</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">€{{ offer.price }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">DH{{ offer.price }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span [ngClass]="{
                   'bg-yellow-100 text-yellow-800': offer.status === 'PENDING',

@@ -88,7 +88,7 @@
                         </svg>
                       </div>
                       <div class="option-name">2 personnes</div>
-                      <div class="option-price">{{ offerDetails?.prix}} DHS</div>
+                      <div class="option-price">{{ offerDetails?.prix}} DH</div>
                     </button>
                     <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 4" (click)="selectPeople(4)">
                       <div class="option-icon">
@@ -100,7 +100,7 @@
                         </svg>
                       </div>
                       <div class="option-name">4 personnes</div>
-                      <div class="option-price">{{ offerDetails?.prix * 2}} DHS</div>
+                      <div class="option-price">{{ offerDetails?.prix * 2}} DH</div>
                     </button>
                     <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 6" (click)="selectPeople(6)">
                       <div class="option-icon">
@@ -112,7 +112,7 @@
                         </svg>
                       </div>
                       <div class="option-name">6 personnes</div>
-                      <div class="option-price">{{ offerDetails?.prix * 3}} DHS</div>
+                      <div class="option-price">{{ offerDetails?.prix * 3}} DH</div>
                     </button>
                     <button type="button" class="option-card" [class.selected]="currentDesign.nombrePersonnes === 8" (click)="selectPeople(8)">
                       <div class="option-icon">
@@ -124,7 +124,7 @@
                         </svg>
                       </div>
                       <div class="option-name">8 personnes</div>
-                      <div class="option-price">{{ offerDetails?.prix * 4}} DHS</div>
+                      <div class="option-price">{{ offerDetails?.prix * 4}} DH</div>
                     </button>
                   </div>
                   <!-- Validation Error Message -->
@@ -216,7 +216,7 @@
                         </svg>
                       </div>
                       <div class="option-name">Sans Glacage</div>
-                      <div class="option-price">0 DHS</div>
+                      <div class="option-price">0 DH</div>
                     </button>
                     <button type="button" class="option-card" [class.selected]="currentDesign.glacage === 'fondant'" (click)="selectGlacage('fondant')">
                       <div class="option-icon">
@@ -225,7 +225,7 @@
                         </svg>
                       </div>
                       <div class="option-name">Fondant Royal</div>
-                      <div class="option-price">200 DHS</div>
+                      <div class="option-price">200 DH</div>
                     </button>
                     <button type="button" class="option-card" [class.selected]="currentDesign.glacage === 'ganache'" (click)="selectGlacage('ganache')">
                       <div class="option-icon">
@@ -237,7 +237,7 @@
                         </svg>
                       </div>
                       <div class="option-name">Ganache Chocolat</div>
-                      <div class="option-price">150 DHS</div>
+                      <div class="option-price">150 DH</div>
                     </button>
                     <button type="button" class="option-card" [class.selected]="currentDesign.glacage === 'creme'" (click)="selectGlacage('creme')">
                       <div class="option-icon">
@@ -250,7 +250,7 @@
                         </svg>
                       </div>
                       <div class="option-name">Crème au Beurre</div>
-                      <div class="option-price">100 DHS</div>
+                      <div class="option-price">100 DH</div>
                     </button>
                   </div>
                   <div class="form-error" *ngIf="cakeForm.hasError('glacageRequired')">
@@ -289,19 +289,19 @@
                 <div class="summary-body">
                   <div class="summary-row">
                     <span class="summary-label">Base</span>
-                    <span class="summary-value">{{calculateBasePrice()}} DHS</span>
+                    <span class="summary-value">{{calculateBasePrice()}} DH</span>
                   </div>
                   <div class="summary-row">
                     <span class="summary-label">Couches</span>
-                    <span class="summary-value">{{calculateLayersPrice()}} DHS</span>
+                    <span class="summary-value">{{calculateLayersPrice()}} DH</span>
                   </div>
                   <div class="summary-row">
                     <span class="summary-label">Glacage</span>
-                    <span class="summary-value">{{calculateGlacagePrice()}} DHS</span>
+                    <span class="summary-value">{{calculateGlacagePrice()}} DH</span>
                   </div>
                   <div class="summary-row summary-total">
                     <span class="summary-label">Total</span>
-                    <span class="summary-value">{{calculateTotalPrice()}} DHS</span>
+                    <span class="summary-value">{{calculateTotalPrice()}} DH</span>
                   </div>
   
                   <!-- Action Buttons -->
