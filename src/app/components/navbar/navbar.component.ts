@@ -25,7 +25,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isRegisterModalOpen = false;
   isMobileMenuOpen = false;
   isAuthenticated = false;
+  showProfileDropdown = false;
   private authSubscription?: Subscription;
+  private outsideClickListener?: (event: MouseEvent) => void;
+  private escapeListener?: (event: KeyboardEvent) => void;
 
   constructor(
     public authService: AuthService,
@@ -44,6 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
+    this.removeDropdownListeners();
   }
 
   toggleMobileMenu() {
@@ -76,5 +80,53 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.closeMobileMenu();
     this.router.navigate(['/']);
+  }
+
+  toggleProfileDropdown() {
+    this.showProfileDropdown = !this.showProfileDropdown;
+    if (this.showProfileDropdown) {
+      this.addDropdownListeners();
+    } else {
+      this.removeDropdownListeners();
+    }
+  }
+
+  addDropdownListeners() {
+    this.outsideClickListener = (event: MouseEvent) => {
+      const dropdown = document.getElementById('profile-dropdown-menu');
+      const trigger = document.getElementById('profile-dropdown-trigger');
+      if (dropdown && trigger && !dropdown.contains(event.target as Node) && !trigger.contains(event.target as Node)) {
+        this.showProfileDropdown = false;
+        this.removeDropdownListeners();
+      }
+    };
+    this.escapeListener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        this.showProfileDropdown = false;
+        this.removeDropdownListeners();
+      }
+    };
+    document.addEventListener('mousedown', this.outsideClickListener);
+    document.addEventListener('keydown', this.escapeListener);
+  }
+
+  removeDropdownListeners() {
+    if (this.outsideClickListener) {
+      document.removeEventListener('mousedown', this.outsideClickListener);
+      this.outsideClickListener = undefined;
+    }
+    if (this.escapeListener) {
+      document.removeEventListener('keydown', this.escapeListener);
+      this.escapeListener = undefined;
+    }
+  }
+
+  onProfileDropdownBlur() {
+    setTimeout(() => {
+      if (this.showProfileDropdown) {
+        this.showProfileDropdown = false;
+        this.removeDropdownListeners();
+      }
+    }, 100);
   }
 }

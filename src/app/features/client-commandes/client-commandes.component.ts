@@ -19,6 +19,20 @@ export class ClientCommandesComponent implements OnInit {
   error: string | null = null;
   selectedStatut: string = '';
 
+  statuts = [
+    { label: 'Tous', value: '' },
+    { label: 'En attente', value: 'EN_ATTENTE' },
+    { label: 'Préparation', value: 'PREPARATION' },
+    { label: 'Livraison', value: 'LIVRAISON' },
+    { label: 'Terminée', value: 'TERMINEE' },
+    { label: 'Annulée', value: 'ANNULEE' }
+  ];
+
+  selectStatut(value: string) {
+    this.selectedStatut = value;
+    this.currentPage = 1;
+  }
+
   // Pagination properties
   currentPage: number = 1;
   pageSize: number = 10;
